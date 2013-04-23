@@ -102,9 +102,7 @@ public class DrawView extends View
 		int y = (int) (event.getY()/caseSize);
 
 		// we're out, we don't handle this, return false
-		if(x > GRID_SIZE-1 || y > GRID_SIZE-1)
-			return false;
-		else
+		if(x <= GRID_SIZE-1 && y <= GRID_SIZE-1)
 		{
 			// let's put some black to start
 			// locate the square which correspond to the point the user has touched
@@ -113,10 +111,10 @@ public class DrawView extends View
 
 			// redraw
 			invalidate();
-
-			// we have consumed the event, return true
-			return true;
 		}
+
+		// we have consumed the event, return true
+		return true;
 	}
 
 	@Override
