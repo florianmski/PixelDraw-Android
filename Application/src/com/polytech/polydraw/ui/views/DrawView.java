@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -12,7 +13,7 @@ public class DrawView extends View
 {
 	private final static int GRID_SIZE = 16;
 	
-	private String currentColor = "#000000";
+	private String currentColor = "#51574a";
 
 	// matrix containing the case colors
 	private String[][] matrix;
@@ -100,17 +101,22 @@ public class DrawView extends View
 
 		int x = (int) (event.getX()/caseSize);
 		int y = (int) (event.getY()/caseSize);
-
-		// we're out, we don't handle this, return false
-		if(x <= GRID_SIZE-1 && y <= GRID_SIZE-1)
+		
+		// we're out, we don't handle this, return
+		if((x <= GRID_SIZE-1 && y <= GRID_SIZE-1) && (x >= 0 && y >= 0))
 		{
-			// let's put some black to start
+			String caseColor = matrix[x][y];
+			// redraw only if player use another color on the case
+			if(caseColor.equals(currentColor))
+				return true;
+			
 			// locate the square which correspond to the point the user has touched
 			// I do think we can think of a better algorithm but let's start with this one
 			matrix[x][y] = currentColor;
 
 			// redraw
 			invalidate();
+			Log.e("test", "redraw");
 		}
 
 		// we have consumed the event, return true
