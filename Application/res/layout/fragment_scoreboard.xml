@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <ListView
+        android:id="@+id/lvScoreBoard"
+        android:layout_width="match_parent"
+        android:layout_height="384dp" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/tvTimeRemain"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Next turn in : 5 seconds"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center" />
+
+</LinearLayout>
