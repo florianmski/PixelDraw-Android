@@ -2,8 +2,18 @@ package com.polytech.polydraw.api;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.polytech.polydraw.models.DrawEventListener;
+import com.polytech.polydraw.models.GameDrawEvent;
+import com.polytech.polydraw.models.GameEvent;
+import com.polytech.polydraw.models.GamePlayerEvent;
+import com.polytech.polydraw.models.GameRoomEvent;
+import com.polytech.polydraw.models.GameServerEvent;
 import com.polytech.polydraw.models.Player;
+import com.polytech.polydraw.models.PlayerEventListener;
 import com.polytech.polydraw.models.Room;
+import com.polytech.polydraw.models.RoomEventListener;
+import com.polytech.polydraw.models.RoomList;
+import com.polytech.polydraw.models.ServerEventListener;
 
 import android.util.Log;
 import de.tavendo.autobahn.Wamp.CallHandler;
@@ -16,6 +26,7 @@ public class CommunicationManager{
 	private final String TAG = "CommunicationManager";
 	private final WampConnection mConnection;
 	private final String mWSURI = "ws://88.191.157.29:8080";
+	private GameContext mGameContext = GameContext.getInstance();
 	
 	private CommunicationManager(){
 		mConnection = new WampConnection();
@@ -65,7 +76,7 @@ public class CommunicationManager{
 	 * @param getRoomListHandler
 	 */
 	public void getRoomList(CallHandler getRoomListHandler){
-		mConnection.call("get_room_list", ArrayList.class, getRoomListHandler);
+		mConnection.call("get_room_list", RoomList.class, getRoomListHandler);
 	}
 	
 	/**
@@ -78,16 +89,17 @@ public class CommunicationManager{
 		mConnection.call("join_room", HashMap.class, joinRoomHandler);
 	}
 	
-	private final String chatUri = "chat";
+	
+	
 	public void sendChatMessage(String message){
-		mConnection.publish(chatUri , message);
+		mConnection.publish(mGameContext.getRoomID() , message);
 	}
-	public void subscribeChat(EventHandler chatHandler){
-		mConnection.subscribe(chatUri, HashMap.class, chatHandler);
+	public void subscribeGame(){
+		mConnection.subscribe(mGameContext.getRoomID(), GameEvent.class, mGameEventHandler);
 	}
 	
-	public void unsubscribeChat(){
-		mConnection.unsubscribe(chatUri);
+	public void unsubscribeGame(){
+		mConnection.unsubscribe(mGameContext.getRoomID());
 	}
 	
 	/**
@@ -97,6 +109,96 @@ public class CommunicationManager{
 	public void startGame(CallHandler startGameHandler){
 		mConnection.call("call_join_room", HashMap.class, startGameHandler);
 	}
+	
+	//Listener for chat message
+	private ArrayList<PlayerEventListener> mPlayerEventListeners;
+	//Listener for server message
+	private ArrayList<ServerEventListener> mServerEventListeners;
+	//Listener for room event (connection/disconnection/host change/...)
+	private ArrayList<RoomEventListener> mRoomEventListeners;
+	//Listener for picture refresh
+	private ArrayList<DrawEventListener> mDrawEventListeners;
+	
+	public void addPlayerEventListener(PlayerEventListener l){
+		mPlayerEventListeners.add(l);
+	}
+	
+	public void removePlayerEventListener(PlayerEventListener l){
+		mPlayerEventListeners.remove(l);
+	}
+	
+	public void removeAllPlayerEventListener(PlayerEventListener l){
+		mPlayerEventListeners.clear();
+	}
+	
+	public void addServerEventListener(ServerEventListener l){
+		mServerEventListeners.add(l);
+	}
+	
+	public void removeGameEventListener(ServerEventListener l){
+		mServerEventListeners.remove(l);
+	}
+	
+	public void removeAllGameEventListener(ServerEventListener l){
+		mServerEventListeners.clear();
+	}
+	
+	public void addRoomEventListener(RoomEventListener l){
+		mRoomEventListeners.add(l);
+	}
+	
+	public void removeRoomEventListener(RoomEventListener l){
+		mPlayerEventListeners.remove(l);
+	}
+	
+	public void removeAllRoomEventListener(RoomEventListener l){
+		mPlayerEventListeners.clear();
+	}
+	
+	public void addDrawEventListener(DrawEventListener l){
+		mDrawEventListeners.add(l);
+	}
+	
+	public void removeDrawEventListener(DrawEventListener l){
+		mPlayerEventListeners.remove(l);
+	}
+	
+	public void removeAllDrawEventListener(DrawEventListener l){
+		mPlayerEventListeners.clear();
+	}
+	
+	EventHandler mGameEventHandler = new EventHandler(){
+
+		@Override
+		public void onEvent(String topicUri, Object event) {
+			GameEvent gameEvent = (GameEvent) event;
+			switch(gameEvent.type){
+			case 0:
+				for(PlayerEventListener l : mPlayerEventListeners){
+					l.onEvent((GamePlayerEvent) event);
+				}
+				break;
+			case 1:
+				for(ServerEventListener l : mServerEventListeners){
+					l.onEvent((GameServerEvent) event);
+				}
+				break;
+			case 2:
+				for(RoomEventListener l : mRoomEventListeners){
+					l.onEvent((GameRoomEvent) event);
+				}
+				break;
+			case 3:
+				for(DrawEventListener l : mDrawEventListeners){
+					l.onEvent((GameDrawEvent) event);
+				}
+				break;
+			default:
+				Log.e("CommunicationManager", "Unhandle event received");
+			}
+			
+		}
+	};
 	
 	
 }
