@@ -1,5 +1,5 @@
 package com.polytech.polydraw.models;
 
 public interface ServerEventListener {
-	public void onEvent(GameServerEvent e);
+	public void onServerEvent(GameEvent e);
 }

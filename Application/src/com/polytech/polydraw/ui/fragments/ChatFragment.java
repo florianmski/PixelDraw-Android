@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListMessageAdapter;
+import com.polytech.polydraw.models.GameEvent;
 import com.polytech.polydraw.models.GamePlayerEvent;
 import com.polytech.polydraw.models.GameServerEvent;
 import com.polytech.polydraw.models.PlayerEventListener;
@@ -99,14 +100,14 @@ public class ChatFragment extends BaseFragment implements PlayerEventListener, S
 	}
 
 	@Override
-	public void onEvent(GameServerEvent e) 
+	public void onPlayerEvent(GameEvent e) 
 	{
-		onNewMessageReceived(e.msg);
+		onNewMessageReceived(e.event.msg);
 	}
 
 	@Override
-	public void onEvent(GamePlayerEvent e) 
+	public void onServerEvent(GameEvent e) 
 	{
-		onNewMessageReceived(e.msg);
+		onNewMessageReceived(e.event.msg);
 	}
 }

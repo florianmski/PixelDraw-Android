@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.polytech.polydraw.models.DrawEventListener;
 import com.polytech.polydraw.models.GameDrawEvent;
+import com.polytech.polydraw.models.GameEventWrapper;
 import com.polytech.polydraw.models.GameEvent;
 import com.polytech.polydraw.models.GamePlayerEvent;
 import com.polytech.polydraw.models.GameRoomEvent;
@@ -15,7 +16,9 @@ import com.polytech.polydraw.models.Room;
 import com.polytech.polydraw.models.RoomEventListener;
 import com.polytech.polydraw.models.RoomList;
 import com.polytech.polydraw.models.ServerEventListener;
+import com.polytech.polydraw.models.Wrapper;
 
+import android.os.SystemClock;
 import android.util.Log;
 import de.tavendo.autobahn.Wamp.CallHandler;
 import de.tavendo.autobahn.Wamp.EventHandler;
@@ -54,10 +57,7 @@ public class CommunicationManager{
 		       mConnection.prefix("call", "http://88.191.157.29:8080/call");
 		       HashMap<String, String> key = new HashMap<String, String>();
 		       key.put("name", player_name);
-		       mConnection.call("login", 
-						Player.class, 
-						playerIDHandler, 
-						key);
+		       mConnection.call("login", Wrapper.class, playerIDHandler, key);
 		    }
 		    @Override
 		    public void onClose(int code, String reason) {
@@ -69,7 +69,7 @@ public class CommunicationManager{
 	public void createRoom(final String room_name, CallHandler createRoomHandler){
 		HashMap<String,String> key = new HashMap<String,String>();
 		key.put("room_name", room_name);
-		mConnection.call("create_room", Room.class, createRoomHandler, key);
+		mConnection.call("create_room", Wrapper.class, createRoomHandler, key);
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class CommunicationManager{
 	 * @param getRoomListHandler
 	 */
 	public void getRoomList(CallHandler getRoomListHandler){
-		mConnection.call("get_room_list", RoomList.class, getRoomListHandler);
+		mConnection.call("get_room_list", Wrapper.class, getRoomListHandler);
 	}
 	
 	/**
@@ -88,7 +88,7 @@ public class CommunicationManager{
 	public void joinRoom(int room_id, CallHandler joinRoomHandler){
 		HashMap<String, Integer> key = new HashMap<String, Integer>();
 		key.put("room_id", room_id);
-		mConnection.call("join_room", HashMap.class, joinRoomHandler);
+		mConnection.call("join_room", Wrapper.class, joinRoomHandler);
 		
 	}
 	
@@ -97,7 +97,19 @@ public class CommunicationManager{
 		if(room == null){
 			room = new String("room_test");
 		}
-		mConnection.publish(room, message);
+		HashMap<String, Object> key = new HashMap<String, Object>();
+		key.put("type", 0);
+		key.put("time_stamp", System.currentTimeMillis());
+		
+		GameEventWrapper ev = new GameEventWrapper();
+		ev.player_id = mGameContext.getPlayerID();
+		ev.msg = message;
+		
+		GameEvent eve = new GameEvent();
+		eve.type = 0;
+		eve.time_stamp = System.currentTimeMillis();
+		eve.event = ev;
+		mConnection.publish(room, eve);
 	}
 	
 	/**
@@ -180,26 +192,26 @@ public class CommunicationManager{
 
 		@Override
 		public void onEvent(String topicUri, Object event) {
-			GameEvent gameEvent = (GameEvent) event;
-			switch(gameEvent.type){
+			GameEvent gameEventWrapper = (GameEvent) event;
+			switch(gameEventWrapper.type){
 			case 0:
 				for(PlayerEventListener l : mPlayerEventListeners){
-					l.onEvent((GamePlayerEvent) event);
+					l.onPlayerEvent(gameEventWrapper);
 				}
 				break;
 			case 1:
 				for(ServerEventListener l : mServerEventListeners){
-					l.onEvent((GameServerEvent) event);
+					l.onServerEvent(gameEventWrapper);
 				}
 				break;
 			case 2:
 				for(RoomEventListener l : mRoomEventListeners){
-					l.onEvent((GameRoomEvent) event);
+					l.onRoomEvent(gameEventWrapper);
 				}
 				break;
 			case 3:
 				for(DrawEventListener l : mDrawEventListeners){
-					l.onEvent((GameDrawEvent) event);
+					l.onDrawEvent(gameEventWrapper);
 				}
 				break;
 			default:

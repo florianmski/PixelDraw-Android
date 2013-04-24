@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.models.Room;
+import com.polytech.polydraw.models.Wrapper;
+import com.polytech.polydraw.ui.activities.WaitingRoomActivity;
 
 import de.tavendo.autobahn.Wamp.CallHandler;
 
@@ -51,14 +54,13 @@ public class GameCreateFragment extends BaseFragment
 						@Override
 						public void onResult(Object result) 
 						{
-//							Room r = (Room)result;
-//							Log.e("test", "id : " + r.id);
-//							Log.e("test", "name : " + r.name);
-//							Log.e("test", "max_player : " + r.max_player);
-
+							Wrapper wr = (Wrapper) result;
 							
-//							getGC().setRoomID(r.id);
-//							WaitingRoomActivity.launch(getActivity());
+							Room r = wr.room;
+							
+							getGC().setRoomID((String)r.id);
+							getCM().subscribeGame();
+							WaitingRoomActivity.launch(getActivity());
 						}
 
 						@Override

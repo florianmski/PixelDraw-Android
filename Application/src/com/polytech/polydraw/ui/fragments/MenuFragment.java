@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.models.Player;
+import com.polytech.polydraw.models.Wrapper;
 import com.polytech.polydraw.ui.activities.GameActivity;
 import com.polytech.polydraw.ui.activities.GameCreateActivity;
 import com.polytech.polydraw.ui.activities.GameJoinActivity;
@@ -130,8 +132,9 @@ public class MenuFragment extends BaseFragment implements CallHandler
 	@Override
 	public void onResult(Object result) 
 	{
-//		Player p = (Player)result;
-//		getGC().setPlayerID(String.valueOf(p.id));
+		Wrapper convertedResult = (Wrapper)result;
+		Player p = convertedResult.player;
+		getGC().setPlayerID(String.valueOf(p.id));
 //		Log.e("LOLOLOL", "result");
 	}
 
