@@ -5,7 +5,7 @@ public class Room {
 	public String name;
 	public int count_player;
 	public int max_player;
-	public int admin_id;
+	public String admin_id;
 	
 	public String method;
 }

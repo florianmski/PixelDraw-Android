@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.models.DrawEventListener;
+import com.polytech.polydraw.models.GameDrawEvent;
 import com.polytech.polydraw.ui.fragments.ColorDialogFragment.OnColorListener;
 import com.polytech.polydraw.ui.views.CircleColorView;
 import com.polytech.polydraw.ui.views.DrawView;

@@ -1,7 +1,6 @@
 package com.polytech.polydraw.ui.fragments;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +13,12 @@ import android.widget.ListView;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListMessageAdapter;
+import com.polytech.polydraw.models.GamePlayerEvent;
+import com.polytech.polydraw.models.GameServerEvent;
+import com.polytech.polydraw.models.PlayerEventListener;
+import com.polytech.polydraw.models.ServerEventListener;
 
-public class ChatFragment extends BaseFragment
+public class ChatFragment extends BaseFragment implements PlayerEventListener, ServerEventListener
 {
 	private ListView lvChat;
 	private EditText edtChat;
@@ -41,14 +44,8 @@ public class ChatFragment extends BaseFragment
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-
-		final List<String> messages = new ArrayList<String>();
-		for(int i = 0; i < 100; i++)
-			messages.add("coucou : " + i);
 		
-		onNewMessageReceived();
-
-		lvChat.setAdapter(adapter = new ListMessageAdapter(getActivity(), messages));
+		lvChat.setAdapter(adapter = new ListMessageAdapter(getActivity(), new ArrayList<String>()));
 
 		btnChatSend.setOnClickListener(new OnClickListener() 
 		{	
@@ -57,9 +54,7 @@ public class ChatFragment extends BaseFragment
 			{
 				String message = edtChat.getText().toString().trim();
 				if(!message.equals(""))
-				{
 					getCM().sendChatMessage(message);
-				}
 			}
 		});
 	}
@@ -75,15 +70,43 @@ public class ChatFragment extends BaseFragment
 
 		return v;
 	}
+	
+	public void onStart()
+	{
+		super.onStart();
+		
+		getCM().addPlayerEventListener(this);
+		getCM().addServerEventListener(this);
+	}
+	
+	public void onDestroy()
+	{
+		super.onDestroy();
+		
+		getCM().removePlayerEventListener(this);
+		getCM().removeServerEventListener(this);
+	}
 
-	public void onNewMessageReceived()
+	public void onNewMessageReceived(String message)
 	{
 		displayChatIcon(true);
-		// TODO
+		adapter.addMessage(message);
 	}
 
 	public void displayChatIcon(boolean visible)
 	{
 		getActivity().getActionBar().setIcon(visible ? R.drawable.ic_menu_notifications : R.drawable.ic_launcher);
+	}
+
+	@Override
+	public void onEvent(GameServerEvent e) 
+	{
+		onNewMessageReceived(e.msg);
+	}
+
+	@Override
+	public void onEvent(GamePlayerEvent e) 
+	{
+		onNewMessageReceived(e.msg);
 	}
 }
