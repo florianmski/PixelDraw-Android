@@ -6,13 +6,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.ui.activities.WaitingRoomActivity;
 
-public class GameCreateFragment extends BaseFragment{
-
-	private Button btCreate;
+public class GameCreateFragment extends BaseFragment
+{
+	private Button btnCreate;
+	private EditText edtCreate;
 	
 	public static GameCreateFragment newInstance()
 	{
@@ -33,11 +35,11 @@ public class GameCreateFragment extends BaseFragment{
 	{
 		super.onActivityCreated(savedInstanceState);
 
-		btCreate.setOnClickListener(new OnClickListener() {
-			
+		btnCreate.setOnClickListener(new OnClickListener() 
+		{	
 			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+			public void onClick(View arg0) 
+			{
 				WaitingRoomActivity.launch(getActivity());
 			}
 		});
@@ -48,7 +50,8 @@ public class GameCreateFragment extends BaseFragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
 		View v = inflater.inflate(R.layout.fragment_game_create, null);
-		btCreate = (Button)v.findViewById(R.id.btCreate);
+		btnCreate = (Button)v.findViewById(R.id.btnCreate);
+		edtCreate = (EditText)v.findViewById(R.id.btnCreate);
 		return v;
 	}
 	

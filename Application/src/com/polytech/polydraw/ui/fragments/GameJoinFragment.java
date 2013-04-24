@@ -12,8 +12,8 @@ import android.widget.ListView;
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListGameAdapter;
 
-public class GameJoinFragment extends BaseFragment{
-
+public class GameJoinFragment extends BaseFragment
+{
 	private ListView lvGame;
 	private ListGameAdapter adapter;
 	
