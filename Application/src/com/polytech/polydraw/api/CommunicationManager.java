@@ -1,6 +1,7 @@
 package com.polytech.polydraw.api;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.polytech.polydraw.models.DrawEventListener;
 import com.polytech.polydraw.models.GameDrawEvent;
@@ -89,11 +90,13 @@ public class CommunicationManager{
 		mConnection.call("join_room", HashMap.class, joinRoomHandler);
 	}
 	
-	
-	
 	public void sendChatMessage(String message){
-		mConnection.publish(mGameContext.getRoomID() , message);
+		mConnection.publish(mGameContext.getRoomID(), message);
 	}
+	
+	/**
+	 * To call once we join a room
+	 */
 	public void subscribeGame(){
 		mConnection.subscribe(mGameContext.getRoomID(), GameEvent.class, mGameEventHandler);
 	}
@@ -111,13 +114,13 @@ public class CommunicationManager{
 	}
 	
 	//Listener for chat message
-	private ArrayList<PlayerEventListener> mPlayerEventListeners;
+	private List<PlayerEventListener> mPlayerEventListeners = new ArrayList<PlayerEventListener>();
 	//Listener for server message
-	private ArrayList<ServerEventListener> mServerEventListeners;
+	private List<ServerEventListener> mServerEventListeners = new ArrayList<ServerEventListener>();
 	//Listener for room event (connection/disconnection/host change/...)
-	private ArrayList<RoomEventListener> mRoomEventListeners;
+	private List<RoomEventListener> mRoomEventListeners = new ArrayList<RoomEventListener>();
 	//Listener for picture refresh
-	private ArrayList<DrawEventListener> mDrawEventListeners;
+	private List<DrawEventListener> mDrawEventListeners = new ArrayList<DrawEventListener>();
 	
 	public void addPlayerEventListener(PlayerEventListener l){
 		mPlayerEventListeners.add(l);
@@ -135,11 +138,11 @@ public class CommunicationManager{
 		mServerEventListeners.add(l);
 	}
 	
-	public void removeGameEventListener(ServerEventListener l){
+	public void removeServerEventListener(ServerEventListener l){
 		mServerEventListeners.remove(l);
 	}
 	
-	public void removeAllGameEventListener(ServerEventListener l){
+	public void removeAllServerEventListener(ServerEventListener l){
 		mServerEventListeners.clear();
 	}
 	
