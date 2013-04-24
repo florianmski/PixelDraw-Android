@@ -1,20 +1,22 @@
 package com.polytech.polydraw.ui.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.ui.fragments.ScoreBoardFragment;
+import com.polytech.polydraw.ui.fragments.WaitingRoomFragment;
+import com.slidingmenu.lib.SlidingMenu;
 
-public class ScoreBoardActivity extends BaseActivity{
+public class ScoreBoardActivity extends ChatEnabledActivity{
 
 		@Override
 		protected void onCreate(Bundle savedInstanceState) 
 		{
 			super.onCreate(savedInstanceState);
-			
-			setContentView(R.layout.activity_empty);
+			getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 			
 			getFragmentManager()
 			.beginTransaction()
@@ -26,6 +28,12 @@ public class ScoreBoardActivity extends BaseActivity{
 		{
 			Intent i = new Intent(a, ScoreBoardActivity.class);
 			a.startActivity(i);
+		}
+		
+		@Override
+		protected Fragment getMainFragment() {
+			// TODO Auto-generated method stub
+			return ScoreBoardFragment.newInstance();
 		}
 }
 
