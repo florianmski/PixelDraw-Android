@@ -29,4 +29,3 @@ public class ScoreBoardActivity extends BaseActivity{
 		}
 }
 
-
