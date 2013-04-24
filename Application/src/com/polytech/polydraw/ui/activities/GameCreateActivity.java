@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.polytech.polydraw.R;
-import com.polytech.polydraw.ui.fragments.GameJoinFragment;
+import com.polytech.polydraw.ui.fragments.GameCreateFragment;
 
-public class GameJoinActivity extends BaseActivity{
-	
+
+public class GameCreateActivity extends BaseActivity{
+
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
@@ -17,15 +18,14 @@ public class GameJoinActivity extends BaseActivity{
 		
 		getFragmentManager()
 		.beginTransaction()
-		.replace(R.id.frameLayoutEmpty, GameJoinFragment.newInstance())
+		.replace(R.id.frameLayoutEmpty, GameCreateFragment.newInstance())
 		.commit();
 	}
 	
 	public static void launch(Activity a)
 	{
-		Intent i = new Intent(a, GameJoinActivity.class);
+		Intent i = new Intent(a, GameCreateActivity.class);
 		a.startActivity(i);
 	}
-
 	
 }
