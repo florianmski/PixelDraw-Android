@@ -56,6 +56,8 @@ public class ColorDialogFragment extends DialogFragment
 	{
 		super.onActivityCreated(savedInstanceState);
 		
+		getDialog().setTitle("Choose a color");
+		
 		gl.setAdapter(adapter = new GridColorAdapter(getActivity(), Arrays.asList(colors)));
 		gl.setOnItemClickListener(new OnItemClickListener() 
 		{

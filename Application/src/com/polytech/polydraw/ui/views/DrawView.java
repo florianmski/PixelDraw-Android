@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -116,7 +115,6 @@ public class DrawView extends View
 
 			// redraw
 			invalidate();
-			Log.e("test", "redraw");
 		}
 
 		// we have consumed the event, return true
