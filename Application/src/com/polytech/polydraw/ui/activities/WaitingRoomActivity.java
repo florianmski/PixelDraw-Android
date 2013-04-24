@@ -8,26 +8,24 @@ import android.os.Bundle;
 import com.polytech.polydraw.ui.fragments.WaitingRoomFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
-public class WaitingRoomActivity extends ChatEnabledActivity{
-	
-	
+public class WaitingRoomActivity extends ChatEnabledActivity
+{	
 	public static void launch(Activity a)
 	{
 		Intent i = new Intent(a, WaitingRoomActivity.class);
 		a.startActivity(i);
 	}
-	
+
 	@Override
-	protected Fragment getMainFragment() {
-		// TODO Auto-generated method stub
+	protected Fragment getMainFragment() 
+	{
 		return WaitingRoomFragment.newInstance();
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
-	
 }

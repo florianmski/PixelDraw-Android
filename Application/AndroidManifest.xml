@@ -28,8 +28,6 @@
         </activity>
          <activity android:name="com.polytech.polydraw.ui.activities.GameJoinActivity" >
         </activity>
-        <activity android:name="com.polytech.polydraw.ui.activities.GameCreateActivity" >
-        </activity>
         <activity android:name="com.polytech.polydraw.ui.activities.WaitingRoomActivity" >
         </activity>
     </application>

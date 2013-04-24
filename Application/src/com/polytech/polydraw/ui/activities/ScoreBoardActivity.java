@@ -9,30 +9,30 @@ import com.polytech.polydraw.R;
 import com.polytech.polydraw.ui.fragments.ScoreBoardFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
-public class ScoreBoardActivity extends ChatEnabledActivity{
+public class ScoreBoardActivity extends ChatEnabledActivity
+{
+	@Override
+	protected void onCreate(Bundle savedInstanceState) 
+	{
+		super.onCreate(savedInstanceState);
+		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
-		@Override
-		protected void onCreate(Bundle savedInstanceState) 
-		{
-			super.onCreate(savedInstanceState);
-			getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-			
-			getFragmentManager()
-			.beginTransaction()
-			.replace(R.id.frameLayoutEmpty, ScoreBoardFragment.newInstance())
-			.commit();
-		}	
-		
-		public static void launch(Activity a)
-		{
-			Intent i = new Intent(a, ScoreBoardActivity.class);
-			a.startActivity(i);
-		}
-		
-		@Override
-		protected Fragment getMainFragment() {
-			// TODO Auto-generated method stub
-			return ScoreBoardFragment.newInstance();
-		}
+		getFragmentManager()
+		.beginTransaction()
+		.replace(R.id.frameLayoutEmpty, ScoreBoardFragment.newInstance())
+		.commit();
+	}	
+
+	public static void launch(Activity a)
+	{
+		Intent i = new Intent(a, ScoreBoardActivity.class);
+		a.startActivity(i);
+	}
+
+	@Override
+	protected Fragment getMainFragment() 
+	{
+		return ScoreBoardFragment.newInstance();
+	}
 }
 

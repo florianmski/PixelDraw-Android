@@ -15,13 +15,11 @@ import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListPlayerAdapter;
 import com.polytech.polydraw.ui.activities.ScoreBoardActivity;
 
-public class WaitingRoomFragment extends BaseFragment{
-
-	
+public class WaitingRoomFragment extends BaseFragment
+{	
 	private ListView lvPlayer;
 	private ListPlayerAdapter adapter;
 	private Button btnLaunch;
-	
 	
 	public static WaitingRoomFragment newInstance()
 	{
@@ -42,17 +40,16 @@ public class WaitingRoomFragment extends BaseFragment{
 	{
 		super.onActivityCreated(savedInstanceState);
 		final List<String> players = new ArrayList<String>();
-		for(int i = 0; i < 6; i++){
-			
+		for(int i = 0; i < 6; i++)			
 			players.add("Player "+i);
-		}
+		
 		lvPlayer.setAdapter(adapter = new ListPlayerAdapter(getActivity(), players));
 			
-		btnLaunch.setOnClickListener(new OnClickListener() {
-			
+		btnLaunch.setOnClickListener(new OnClickListener() 
+		{	
 			@Override
-			public void onClick(View v) {
-				
+			public void onClick(View v) 
+			{	
 				ScoreBoardActivity.launch(getActivity());
 			}
 		});

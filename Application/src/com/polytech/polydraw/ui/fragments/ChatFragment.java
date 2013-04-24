@@ -14,10 +14,9 @@ import android.widget.ListView;
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListMessageAdapter;
 import com.polytech.polydraw.models.GameEvent;
-import com.polytech.polydraw.models.GamePlayerEvent;
-import com.polytech.polydraw.models.GameServerEvent;
 import com.polytech.polydraw.models.PlayerEventListener;
 import com.polytech.polydraw.models.ServerEventListener;
+import com.polytech.polydraw.ui.activities.ChatEnabledActivity;
 
 public class ChatFragment extends BaseFragment implements PlayerEventListener, ServerEventListener
 {
@@ -90,7 +89,9 @@ public class ChatFragment extends BaseFragment implements PlayerEventListener, S
 
 	public void onNewMessageReceived(String message)
 	{
-		displayChatIcon(true);
+		// if sliding menu is not opened, don't show the new message icon
+		if(!((ChatEnabledActivity)getActivity()).getSlidingMenu().isMenuShowing())
+			displayChatIcon(true);
 		adapter.addMessage(message);
 	}
 

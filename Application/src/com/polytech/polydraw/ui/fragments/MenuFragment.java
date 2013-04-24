@@ -21,8 +21,7 @@ import de.tavendo.autobahn.Wamp.CallHandler;
 
 public class MenuFragment extends BaseFragment implements CallHandler
 {
-	private Button btnCreate;
-	private Button btnJoin;
+	private Button btnPlay;
 	private Button btnTest;
 
 	public static MenuFragment newInstance()
@@ -44,16 +43,7 @@ public class MenuFragment extends BaseFragment implements CallHandler
 	{
 		super.onActivityCreated(savedInstanceState);
 		
-		btnCreate.setOnClickListener(new OnClickListener() 
-		{	
-			@Override
-			public void onClick(View v) 
-			{
-//				GameCreateActivity.launch(getActivity());
-			}
-		});
-		
-		btnJoin.setOnClickListener(new OnClickListener() 
+		btnPlay.setOnClickListener(new OnClickListener() 
 		{	
 			@Override
 			public void onClick(View v) 
@@ -68,7 +58,6 @@ public class MenuFragment extends BaseFragment implements CallHandler
 			public void onClick(View v) 
 			{
 				GameActivity.launch(getActivity());
-//				ScoreBoardActivity.launch(getActivity());
 			}
 		});
 		
@@ -86,7 +75,7 @@ public class MenuFragment extends BaseFragment implements CallHandler
 		boolean isPlayerNameSet = settings.getBoolean("is_player_name_set", false);
 		if(!isPlayerNameSet)
 		{
-			//Alert dialog for name
+			// Alert dialog for name
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			final EditText edt = new EditText(getActivity());
 			edt.setHint("Enter your pseudo");
@@ -121,8 +110,7 @@ public class MenuFragment extends BaseFragment implements CallHandler
 	{
 		View v = inflater.inflate(R.layout.fragment_menu, null);
 		
-		btnCreate = (Button)v.findViewById(R.id.buttonCreate);
-		btnJoin = (Button)v.findViewById(R.id.buttonJoin);
+		btnPlay = (Button)v.findViewById(R.id.buttonPlay);
 		btnTest = (Button)v.findViewById(R.id.buttonTest);
 		
 		return v;
@@ -134,14 +122,12 @@ public class MenuFragment extends BaseFragment implements CallHandler
 		Wrapper convertedResult = (Wrapper)result;
 		Player p = convertedResult.player;
 		getGC().setPlayerID(String.valueOf(p.id));
-//		Log.e("LOLOLOL", "result");
 	}
 
 	@Override
 	public void onError(String errorUri, String errorDesc) 
 	{
 		// TODO
-//		mButReconnect.setVisibility(View.VISIBLE);
 	}
 	
 }

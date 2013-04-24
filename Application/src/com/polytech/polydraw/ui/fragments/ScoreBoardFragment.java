@@ -17,13 +17,13 @@ import com.polytech.polydraw.adapters.ListScoreAdapter;
 import com.polytech.polydraw.ui.activities.GameActivity;
 
 
-public class ScoreBoardFragment extends BaseFragment{
-
-	
+public class ScoreBoardFragment extends BaseFragment
+{	
 	private ListView lvScoreBoard;
 	private ListScoreAdapter adapter;
 	private TextView tvTimeRemain;
 	private Button btnLaunchTurn;
+	
 	public static ScoreBoardFragment newInstance()
 	{
 		ScoreBoardFragment f = new ScoreBoardFragment();
@@ -35,26 +35,24 @@ public class ScoreBoardFragment extends BaseFragment{
 		super.onActivityCreated(savedInstanceState);
 		
 		final List<String> scores = new ArrayList<String>();
-		for(int i = 0; i < 4; i++){
-			
+		for(int i = 0; i < 4; i++)		
 			scores.add(""+i);
-		}
+		
 		lvScoreBoard.setAdapter(adapter = new ListScoreAdapter(getActivity(), scores));
 	
-	
-		btnLaunchTurn.setOnClickListener(new OnClickListener() {
-			
+		btnLaunchTurn.setOnClickListener(new OnClickListener() 
+		{	
 			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+			public void onClick(View v) 
+			{
 				GameActivity.launch(getActivity());
 			}
 		});
 	
 	}
 
-	public void setTimeRemain(int time){
-		
+	public void setTimeRemain(int time)
+	{	
 		tvTimeRemain.setText(time + " seconds");
 	}
 	

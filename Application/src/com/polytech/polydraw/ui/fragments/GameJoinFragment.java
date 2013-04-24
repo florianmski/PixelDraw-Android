@@ -39,44 +39,40 @@ public class GameJoinFragment extends BaseFragment
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		
+
 		setHasOptionsMenu(true);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-		
-		
+
+
 		final List<String> games = new ArrayList<String>();
 		for(int i = 0; i < 7; i++)
 			games.add("Game : " + i);
-		
-		lvGame.setAdapter(this.adapter = new ListGameAdapter(getActivity(), games));	
-		
-		lvGame.setOnItemClickListener(new OnItemClickListener() {
 
+		lvGame.setAdapter(this.adapter = new ListGameAdapter(getActivity(), games));	
+
+		lvGame.setOnItemClickListener(new OnItemClickListener() 
+		{
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+			{
+				// TODO take care of the room we choose
 				WaitingRoomActivity.launch(getActivity());
 			}
 		});
-	
-		btnCreateRoom.setOnClickListener(new OnClickListener() {
-			
+
+		btnCreateRoom.setOnClickListener(new OnClickListener() 
+		{	
 			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-//				GameCreateActivity.launch(getActivity());
+			public void onClick(View arg0) 
+			{
 				openDialog();
 			}
-			
-		});
-	
-	
+		});	
 	}
 
 	@Override
@@ -89,26 +85,22 @@ public class GameJoinFragment extends BaseFragment
 	}
 
 	private void openDialog()
-	{
-		//Intent i = new Intent(a, GameCreateActivity.class);
-		//a.startActivity(i);
-		
+	{		
 		String title = "Enter a room name";
-		
-		//On instancie notre layout en tant que View
-        LayoutInflater factory = LayoutInflater.from(getActivity());
-        final View alertDialogView = factory.inflate(R.layout.fragment_game_create, null);
- 
-        //Création de l'AlertDialog
-        AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-        adb.setView(alertDialogView);
-        adb.setTitle(title);
-        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
- 
-            	EditText edt = (EditText)alertDialogView.findViewById(R.id.edtPseudo);		
-            	
-            	String roomName = edt.getText().toString().trim();
+
+		LayoutInflater factory = LayoutInflater.from(getActivity());
+		final View alertDialogView = factory.inflate(R.layout.fragment_game_create, null);
+
+		AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+		adb.setView(alertDialogView);
+		adb.setTitle(title);
+		adb.setPositiveButton("OK", new DialogInterface.OnClickListener() 
+		{
+			public void onClick(DialogInterface dialog, int which) 
+			{
+				EditText edt = (EditText)alertDialogView.findViewById(R.id.edtPseudo);		
+
+				String roomName = edt.getText().toString().trim();
 				if(!roomName.equals(""))
 				{
 					getCM().createRoom(roomName, new CallHandler() 
@@ -117,9 +109,9 @@ public class GameJoinFragment extends BaseFragment
 						public void onResult(Object result) 
 						{
 							Wrapper wr = (Wrapper) result;
-							
+
 							Room r = wr.room;
-							
+
 							getGC().setRoomID((String)r.id);
 							getCM().subscribeGame();
 							WaitingRoomActivity.launch(getActivity());
@@ -128,22 +120,20 @@ public class GameJoinFragment extends BaseFragment
 						@Override
 						public void onError(String errorUri, String errorDesc) 
 						{
-							
+
 						}
 					});
 				}
-            	
-            	WaitingRoomActivity.launch(getActivity());         	
-            }});
-        	adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-        	
+
+				WaitingRoomActivity.launch(getActivity());         	
+			}});
+		adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() 
+		{
 			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub	
-			}
+			public void onClick(DialogInterface dialog, int which) {}
 		});
-           
-        adb.show();	
+
+		adb.show();	
 	}
-	
+
 }
