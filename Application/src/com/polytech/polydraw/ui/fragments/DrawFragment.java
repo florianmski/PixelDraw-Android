@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.ui.fragments.ColorDialogFragment.OnColorListener;
@@ -18,6 +20,8 @@ public class DrawFragment extends BaseFragment
 {
 	private DrawView dv;
 	private CircleColorView cd;
+	private EditText edtChat;
+	private Button btnChatSend;
 	
 	public static DrawFragment newInstance()
 	{
@@ -39,13 +43,30 @@ public class DrawFragment extends BaseFragment
 		super.onActivityCreated(savedInstanceState);
 
 		cd = (CircleColorView) getActivity().getLayoutInflater().inflate(R.layout.view_color, null);
+		
+		btnChatSend.setOnClickListener(new OnClickListener() 
+		{	
+			@Override
+			public void onClick(View v) 
+			{
+				String message = edtChat.getText().toString().trim();
+				if(!message.equals(""))
+				{
+					getCM().sendChatMessage(message);
+				}
+			}
+		});
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
 		View v = inflater.inflate(R.layout.fragment_draw, null);
+		
 		dv = (DrawView)v.findViewById(R.id.drawView);
+		edtChat = (EditText)v.findViewById(R.id.editTextChat);
+		btnChatSend = (Button)v.findViewById(R.id.buttonChatSend);
+		
 		return v;
 	}
 

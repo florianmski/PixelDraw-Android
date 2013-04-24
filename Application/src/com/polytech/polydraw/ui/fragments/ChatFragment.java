@@ -54,9 +54,9 @@ public class ChatFragment extends BaseFragment
 			public void onClick(View v) 
 			{
 				String message = edtChat.getText().toString().trim();
-				if(message.equals(""))
+				if(!message.equals(""))
 				{
-					// TODO send message
+					getCM().sendChatMessage(message);
 				}
 			}
 		});

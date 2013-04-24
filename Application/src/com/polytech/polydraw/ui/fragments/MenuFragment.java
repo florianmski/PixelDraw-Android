@@ -85,16 +85,18 @@ public class MenuFragment extends BaseFragment implements CallHandler
 	{
 		final SharedPreferences settings = getActivity().getSharedPreferences("PolydrawPreferences5", 0);
 		boolean isPlayerNameSet = settings.getBoolean("is_player_name_set", false);
-		if(!isPlayerNameSet){
+		if(!isPlayerNameSet)
+		{
 			//Alert dialog for name
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			final EditText edt = new EditText(getActivity());
 			edt.setHint("Enter your pseudo");
 			
-			builder.setView(edt).setPositiveButton("Ok", new DialogInterface.OnClickListener(){
-
+			builder.setView(edt).setPositiveButton("Ok", new DialogInterface.OnClickListener()
+			{
 				@Override
-				public void onClick(DialogInterface dialog, int which) {
+				public void onClick(DialogInterface dialog, int which) 
+				{
 					String playerName = edt.getText().toString().trim();
 					getGC().setPlayerName(playerName);
 					SharedPreferences.Editor settingEditor = settings.edit();
@@ -107,7 +109,8 @@ public class MenuFragment extends BaseFragment implements CallHandler
 			builder.create().show();
 			
 		}
-		else{
+		else
+		{
 			String playerName = settings.getString("player_name", "Anonymous");
 			getGC().setPlayerName(playerName);
 			startConnection();
@@ -127,7 +130,8 @@ public class MenuFragment extends BaseFragment implements CallHandler
 	}
 
 	@Override
-	public void onResult(Object result) {
+	public void onResult(Object result) 
+	{
 		@SuppressWarnings("unchecked")
 		HashMap<String,String> convertedResult = (HashMap<String,String>) result;
 		getGC().setPlayerID(convertedResult.get("result"));
@@ -135,7 +139,9 @@ public class MenuFragment extends BaseFragment implements CallHandler
 	}
 
 	@Override
-	public void onError(String errorUri, String errorDesc) {
+	public void onError(String errorUri, String errorDesc) 
+	{
+		// TODO
 //		mButReconnect.setVisibility(View.VISIBLE);
 	}
 	
