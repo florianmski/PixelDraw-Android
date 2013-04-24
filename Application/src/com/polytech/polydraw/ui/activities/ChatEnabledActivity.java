@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.ui.fragments.ChatFragment;
 import com.slidingmenu.lib.SlidingMenu;
+import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 
 public abstract class ChatEnabledActivity extends BaseActivity
 {
@@ -40,6 +42,15 @@ public abstract class ChatEnabledActivity extends BaseActivity
         menu.setFadeDegree(0.35f);
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         menu.setMenu(R.layout.menu);
+        
+        menu.setOnOpenedListener(new OnOpenedListener() 
+        {	
+			@Override
+			public void onOpened() 
+			{
+				((ChatFragment)getFragmentManager().findFragmentById(R.id.fragmentChat)).displayChatIcon(false);
+			}
+		});
 	}
 
 	@Override
@@ -61,5 +72,10 @@ public abstract class ChatEnabledActivity extends BaseActivity
 			menu.showContent();
 		else
 			super.onBackPressed();
+	}
+	
+	public SlidingMenu getSlidingMenu()
+	{
+		return menu;
 	}
 }

@@ -1,12 +1,9 @@
 package com.polytech.polydraw.ui.fragments;
 
-import java.util.HashMap;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -133,10 +130,9 @@ public class MenuFragment extends BaseFragment implements CallHandler
 	@Override
 	public void onResult(Object result) 
 	{
-		@SuppressWarnings("unchecked")
-		HashMap<String,String> convertedResult = (HashMap<String,String>) result;
-		getGC().setPlayerID(convertedResult.get("result"));
-		Log.e("LOLOLOL", convertedResult.get("result"));
+//		Player p = (Player)result;
+//		getGC().setPlayerID(String.valueOf(p.id));
+//		Log.e("LOLOLOL", "result");
 	}
 
 	@Override
