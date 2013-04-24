@@ -34,13 +34,15 @@ public class GameCreateFragment extends BaseFragment
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
+		
 	}
+	
+	
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-
 		btnCreate.setOnClickListener(new OnClickListener() 
 		{	
 			@Override

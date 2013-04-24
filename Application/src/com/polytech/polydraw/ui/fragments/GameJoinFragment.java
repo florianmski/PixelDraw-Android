@@ -15,12 +15,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListGameAdapter;
-import com.polytech.polydraw.ui.activities.GameCreateActivity;
+import com.polytech.polydraw.models.Room;
+import com.polytech.polydraw.models.Wrapper;
 import com.polytech.polydraw.ui.activities.WaitingRoomActivity;
+
+import de.tavendo.autobahn.Wamp.CallHandler;
 
 public class GameJoinFragment extends BaseFragment
 {
@@ -68,8 +70,8 @@ public class GameJoinFragment extends BaseFragment
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				//GameCreateActivity.launch(getActivity());
-				GameCreateActivity.launch(getActivity());
+//				GameCreateActivity.launch(getActivity());
+				openDialog();
 			}
 			
 		});
@@ -86,6 +88,62 @@ public class GameJoinFragment extends BaseFragment
 		return v;
 	}
 
-	
+	private void openDialog()
+	{
+		//Intent i = new Intent(a, GameCreateActivity.class);
+		//a.startActivity(i);
+		
+		String title = "Enter a room name";
+		
+		//On instancie notre layout en tant que View
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View alertDialogView = factory.inflate(R.layout.fragment_game_create, null);
+ 
+        //Création de l'AlertDialog
+        AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+        adb.setView(alertDialogView);
+        adb.setTitle(title);
+        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+ 
+            	EditText edt = (EditText)alertDialogView.findViewById(R.id.edtPseudo);		
+            	
+            	String roomName = edt.getText().toString().trim();
+				if(!roomName.equals(""))
+				{
+					getCM().createRoom(roomName, new CallHandler() 
+					{	
+						@Override
+						public void onResult(Object result) 
+						{
+							Wrapper wr = (Wrapper) result;
+							
+							Room r = wr.room;
+							
+							getGC().setRoomID((String)r.id);
+							getCM().subscribeGame();
+							WaitingRoomActivity.launch(getActivity());
+						}
+
+						@Override
+						public void onError(String errorUri, String errorDesc) 
+						{
+							
+						}
+					});
+				}
+            	
+            	WaitingRoomActivity.launch(getActivity());         	
+            }});
+        	adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        	
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub	
+			}
+		});
+           
+        adb.show();	
+	}
 	
 }
