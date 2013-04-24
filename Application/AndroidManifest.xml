@@ -23,6 +23,8 @@
         </activity>
         <activity android:name="com.polytech.polydraw.ui.activities.ScoreBoardActivity" >
         </activity>
+         <activity android:name="com.polytech.polydraw.ui.activities.GameJoinActivity" >
+        </activity>
     </application>
 
 </manifest>

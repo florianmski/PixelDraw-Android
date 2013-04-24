@@ -10,6 +10,9 @@ import android.widget.Button;
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.ui.activities.GameActivity;
 
+import com.polytech.polydraw.ui.activities.GameJoinActivity;
+import com.polytech.polydraw.ui.activities.ScoreBoardActivity;
+
 public class MenuFragment extends BaseFragment
 {
 	private Button btnCreate;
@@ -49,7 +52,7 @@ public class MenuFragment extends BaseFragment
 			@Override
 			public void onClick(View v) 
 			{
-				//TODO
+				GameJoinActivity.launch(getActivity());			
 			}
 		});
 		
