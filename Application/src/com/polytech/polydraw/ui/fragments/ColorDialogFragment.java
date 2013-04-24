@@ -1,15 +1,18 @@
 package com.polytech.polydraw.ui.fragments;
 
+import java.util.Arrays;
+
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 
 import com.polytech.polydraw.R;
-import com.polytech.polydraw.ui.views.CircleColorView;
+import com.polytech.polydraw.adapters.GridColorAdapter;
 
 public class ColorDialogFragment extends DialogFragment
 {
@@ -38,7 +41,8 @@ public class ColorDialogFragment extends DialogFragment
 		"#ffffff"
 	};
 	
-	private GridLayout gl;
+	private GridView gl;
+	private GridColorAdapter adapter;
 	private OnColorListener listener;
 	
 	public static ColorDialogFragment newInstance()
@@ -52,21 +56,17 @@ public class ColorDialogFragment extends DialogFragment
 	{
 		super.onActivityCreated(savedInstanceState);
 		
-		for(final String s : colors)
+		gl.setAdapter(adapter = new GridColorAdapter(getActivity(), Arrays.asList(colors)));
+		gl.setOnItemClickListener(new OnItemClickListener() 
 		{
-			CircleColorView cd = new CircleColorView(getActivity(), s);
-			cd.setOnClickListener(new OnClickListener() 
-			{	
-				@Override
-				public void onClick(View v) 
-				{
-					if(listener != null)
-						listener.onColorSelected(s);
-					dismiss();
-				}
-			});
-			gl.addView(cd, 150, 150);
-		}
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) 
+			{
+				if(listener != null)
+					listener.onColorSelected((String) adapter.getItem(position));
+				dismiss();
+			}
+		});
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ColorDialogFragment extends DialogFragment
 	{
 		View v = inflater.inflate(R.layout.fragment_color, null);
 		
-		gl = (GridLayout)v.findViewById(R.id.gridLayout);
+		gl = (GridView)v.findViewById(R.id.gridView);
 		
 		return v;
 	}

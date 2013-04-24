@@ -38,6 +38,7 @@ public class DrawFragment extends BaseFragment
 	{
 		super.onActivityCreated(savedInstanceState);
 
+		cd = (CircleColorView) getActivity().getLayoutInflater().inflate(R.layout.view_color, null);
 	}
 
 	@Override
@@ -52,7 +53,7 @@ public class DrawFragment extends BaseFragment
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
 	{
 		MenuItem colorItem = menu.add(Menu.NONE, R.id.menu_color, Menu.NONE, "color");
-		colorItem.setActionView(cd = new CircleColorView(getActivity(), "#51574a"))
+		colorItem.setActionView(cd)
 		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		
 		cd.setOnClickListener(new OnClickListener() 

@@ -9,7 +9,6 @@ import android.widget.Button;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.ui.activities.GameActivity;
-import com.polytech.polydraw.ui.activities.ScoreBoardActivity;
 
 public class MenuFragment extends BaseFragment
 {
@@ -59,8 +58,8 @@ public class MenuFragment extends BaseFragment
 			@Override
 			public void onClick(View v) 
 			{
-				//GameActivity.launch(getActivity());
-				ScoreBoardActivity.launch(getActivity());
+				GameActivity.launch(getActivity());
+//				ScoreBoardActivity.launch(getActivity());
 			}
 		});
 	}
