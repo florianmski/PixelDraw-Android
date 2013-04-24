@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.ui.fragments.ScoreBoardFragment;
-import com.polytech.polydraw.ui.fragments.WaitingRoomFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
 public class ScoreBoardActivity extends ChatEnabledActivity{

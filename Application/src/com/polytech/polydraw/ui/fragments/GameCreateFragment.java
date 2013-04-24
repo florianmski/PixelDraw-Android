@@ -1,6 +1,5 @@
 package com.polytech.polydraw.ui.fragments;
 
-import java.util.HashMap;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +15,7 @@ import com.polytech.polydraw.models.Wrapper;
 import com.polytech.polydraw.ui.activities.WaitingRoomActivity;
 
 import de.tavendo.autobahn.Wamp.CallHandler;
+
 
 public class GameCreateFragment extends BaseFragment
 {
@@ -71,6 +71,7 @@ public class GameCreateFragment extends BaseFragment
 					});
 				}
 			}
+
 		});
 
 	}
@@ -79,7 +80,7 @@ public class GameCreateFragment extends BaseFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
 		View v = inflater.inflate(R.layout.fragment_game_create, null);
-		btnCreate = (Button)v.findViewById(R.id.btnCreate);
+		//btnCreate = (Button)v.findViewById(R.id.btnCreate);
 		edtCreate = (EditText)v.findViewById(R.id.edtPseudo);
 		return v;
 	}
