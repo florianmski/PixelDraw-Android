@@ -51,7 +51,7 @@ public class GameCreateFragment extends BaseFragment
 	{
 		View v = inflater.inflate(R.layout.fragment_game_create, null);
 		btnCreate = (Button)v.findViewById(R.id.btnCreate);
-		edtCreate = (EditText)v.findViewById(R.id.btnCreate);
+		edtCreate = (EditText)v.findViewById(R.id.edtPseudo);
 		return v;
 	}
 	
