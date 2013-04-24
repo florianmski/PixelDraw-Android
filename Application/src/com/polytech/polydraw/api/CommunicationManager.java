@@ -69,7 +69,7 @@ public class CommunicationManager{
 	public void createRoom(final String room_name, CallHandler createRoomHandler){
 		HashMap<String,String> key = new HashMap<String,String>();
 		key.put("room_name", room_name);
-		mConnection.call("create_room", Room.class, createRoomHandler, room_name);
+		mConnection.call("create_room", Room.class, createRoomHandler, key);
 	}
 	
 	/**
@@ -81,17 +81,23 @@ public class CommunicationManager{
 	}
 	
 	/**
-	 * Join Room state
+	 * Join Room state. 
+	 * Don't forget to register roomID in game context during callback
 	 * @param joinRoomHandler
 	 */
 	public void joinRoom(int room_id, CallHandler joinRoomHandler){
 		HashMap<String, Integer> key = new HashMap<String, Integer>();
 		key.put("room_id", room_id);
 		mConnection.call("join_room", HashMap.class, joinRoomHandler);
+		
 	}
 	
 	public void sendChatMessage(String message){
-		mConnection.publish(mGameContext.getRoomID(), message);
+		String room = mGameContext.getRoomID();
+		if(room == null){
+			room = new String("room_test");
+		}
+		mConnection.publish(room, message);
 	}
 	
 	/**
