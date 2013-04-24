@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListGameAdapter;
+import com.polytech.polydraw.ui.activities.WaitingRoomActivity;
 
 public class GameJoinFragment extends BaseFragment
 {
@@ -42,7 +45,15 @@ public class GameJoinFragment extends BaseFragment
 			games.add("Game : " + i);
 		
 		lvGame.setAdapter(this.adapter = new ListGameAdapter(getActivity(), games));	
+		lvGame.setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				WaitingRoomActivity.launch(getActivity());
+			}
+		});
 	}
 
 	@Override
