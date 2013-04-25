@@ -23,16 +23,11 @@ public class ScoreBoardFragment extends DialogFragment
 		return f;
 	}
 	
-	public void onCreate(Bundle savedInstanceState) 
-	{
-		super.onCreate(savedInstanceState);
-		
-		getDialog().setTitle("Scores");
-	}
-	
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
+		
+		getDialog().setTitle("Scores");
 				
 		lvScoreBoard.setAdapter(adapter = new ListScoreAdapter(getActivity(), GameContext.getInstance().getPlayerList()));
 	}
