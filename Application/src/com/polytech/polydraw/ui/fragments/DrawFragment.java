@@ -210,6 +210,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 					categories[i] = c.name;
 				}
 				AlertDialog.Builder builder = new Builder(getActivity());
+				builder.setCancelable(false);
 				builder.setItems(categories, new DialogInterface.OnClickListener() 
 				{	
 					@Override
