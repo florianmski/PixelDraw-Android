@@ -13,9 +13,9 @@ import android.widget.ListView;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListMessageAdapter;
-import com.polytech.polydraw.models.GameEvent;
-import com.polytech.polydraw.models.PlayerEventListener;
-import com.polytech.polydraw.models.ServerEventListener;
+import com.polytech.polydraw.events.GameEvent;
+import com.polytech.polydraw.listeners.PlayerEventListener;
+import com.polytech.polydraw.listeners.ServerEventListener;
 import com.polytech.polydraw.ui.activities.ChatEnabledActivity;
 
 public class ChatFragment extends BaseFragment implements PlayerEventListener, ServerEventListener

@@ -2,23 +2,15 @@ package com.polytech.polydraw.api;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import com.polytech.polydraw.models.DrawEventListener;
-import com.polytech.polydraw.models.GameDrawEvent;
-import com.polytech.polydraw.models.GameEventWrapper;
-import com.polytech.polydraw.models.GameEvent;
-import com.polytech.polydraw.models.GamePlayerEvent;
-import com.polytech.polydraw.models.GameRoomEvent;
-import com.polytech.polydraw.models.GameServerEvent;
-import com.polytech.polydraw.models.Player;
-import com.polytech.polydraw.models.PlayerEventListener;
-import com.polytech.polydraw.models.Room;
-import com.polytech.polydraw.models.RoomEventListener;
-import com.polytech.polydraw.models.RoomList;
-import com.polytech.polydraw.models.ServerEventListener;
+import com.polytech.polydraw.events.GameEvent;
+import com.polytech.polydraw.events.GameEventWrapper;
+import com.polytech.polydraw.listeners.DrawEventListener;
+import com.polytech.polydraw.listeners.PlayerEventListener;
+import com.polytech.polydraw.listeners.RoomEventListener;
+import com.polytech.polydraw.listeners.ServerEventListener;
+import com.polytech.polydraw.models.Category;
+import com.polytech.polydraw.models.Pixel;
 import com.polytech.polydraw.models.Wrapper;
-
-import android.os.SystemClock;
 import android.util.Log;
 import de.tavendo.autobahn.Wamp.CallHandler;
 import de.tavendo.autobahn.Wamp.EventHandler;
@@ -85,21 +77,31 @@ public class CommunicationManager{
 	 * Don't forget to register roomID in game context during callback
 	 * @param joinRoomHandler
 	 */
-	public void joinRoom(int room_id, CallHandler joinRoomHandler){
-		HashMap<String, Integer> key = new HashMap<String, Integer>();
+	public void joinRoom(String room_id, CallHandler joinRoomHandler){
+		HashMap<String, String> key = new HashMap<String, String>();
 		key.put("room_id", room_id);
-		mConnection.call("join_room", Wrapper.class, joinRoomHandler);
+		mConnection.call("join_room", Wrapper.class, joinRoomHandler, key);
 		
+	}
+	
+	public void leaveRoom(CallHandler leaveRoomHandler){
+		HashMap<String, String> key = new HashMap<String, String>();
+		key.put("room_id", mGameContext.getRoomID());
+		mConnection.call("leave_room", Wrapper.class, leaveRoomHandler, key);
+	}
+	
+	public void getCategories(CallHandler categoriesHandler){
+		mConnection.call("get_categories", Wrapper.class, categoriesHandler);
+	}
+	
+	public void getWord(Category chosenCategory, CallHandler wordHandler){
+		HashMap<String, Integer> key = new HashMap<String, Integer>();
+		key.put("category_id", chosenCategory.id);
+		mConnection.call("get_word", Wrapper.class, wordHandler, key);
 	}
 	
 	public void sendChatMessage(String message){
 		String room = mGameContext.getRoomID();
-		if(room == null){
-			room = new String("room_test");
-		}
-		HashMap<String, Object> key = new HashMap<String, Object>();
-		key.put("type", 0);
-		key.put("time_stamp", System.currentTimeMillis());
 		
 		GameEventWrapper ev = new GameEventWrapper();
 		ev.player_id = mGameContext.getPlayerID();
@@ -110,6 +112,20 @@ public class CommunicationManager{
 		eve.time_stamp = System.currentTimeMillis();
 		eve.event = ev;
 		mConnection.publish(room, eve);
+	}
+
+	public void sendDrawMessage(ArrayList<Pixel> picture){
+		String room = mGameContext.getRoomID();
+		
+		GameEventWrapper core = new GameEventWrapper();
+		core.player_id = mGameContext.getPlayerID();
+		core.picture = picture;
+		
+		GameEvent event = new GameEvent();
+		event.type = 0;
+		event.time_stamp = System.currentTimeMillis();
+		event.event = core;
+		mConnection.publish(room, event);
 	}
 	
 	/**
@@ -217,9 +233,6 @@ public class CommunicationManager{
 			default:
 				Log.e("CommunicationManager", "Unhandle event received");
 			}
-			
 		}
 	};
-	
-	
 }

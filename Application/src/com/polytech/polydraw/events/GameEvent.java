@@ -1,6 +1,4 @@
-package com.polytech.polydraw.models;
-
-import java.util.ArrayList;
+package com.polytech.polydraw.events;
 
 public class GameEvent {
 	public int type;
