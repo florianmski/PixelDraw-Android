@@ -7,17 +7,16 @@ import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.models.Room;
 
 public class GameContext {
-	
 	private String player_name;
 	private String player_id;	
 	private HashMap<String, Player> mPlayerRegister = new HashMap<String, Player>();
 	private Room mCurRoom;
+	
 	private static GameContext mThis;
 	
 	private GameContext(){
 		setPlayerName(new String());
 		setPlayerID(new String());
-//		setRoomID(new String());
 	}
 	
 	public static GameContext getInstance(){

@@ -48,7 +48,6 @@ public class ScoreBoardFragment extends BaseFragment
 				GameActivity.launch(getActivity());
 			}
 		});
-	
 	}
 
 	public void setTimeRemain(int time)
