@@ -5,6 +5,7 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +37,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 
 	private boolean isDrawer = false;
 	private long startTurnAt;
+	private String drawerId;
 
 	private DrawView dv;
 	private CircleColorView cd;
@@ -78,7 +80,9 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 					getCM().sendChatMessage(message);
 				}
 			}
-		});
+		});		
+
+		pbTime.setMax(100);
 
 		startTurn();
 	}
@@ -99,29 +103,32 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
 	{
-		MenuItem colorItem = menu.add(Menu.NONE, R.id.menu_color, Menu.NONE, "color");
-		colorItem
-		.setActionView(cd)
-		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		if(isDrawer)
+		{
+			MenuItem colorItem = menu.add(Menu.NONE, R.id.menu_color, Menu.NONE, "color");
+			colorItem
+			.setActionView(cd)
+			.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-		cd.setOnClickListener(new OnClickListener() 
-		{	
-			@Override
-			public void onClick(View v) 
-			{
-				ColorDialogFragment cdf = ColorDialogFragment.newInstance();
-				cdf.setOnColorListener(new OnColorListener() 
-				{	
-					@Override
-					public void onColorSelected(int color) 
-					{
-						dv.setColor(color);
-						cd.setColor(color);
-					}
-				});
-				cdf.show(getFragmentManager(), null);
-			}
-		});
+			cd.setOnClickListener(new OnClickListener() 
+			{	
+				@Override
+				public void onClick(View v) 
+				{
+					ColorDialogFragment cdf = ColorDialogFragment.newInstance();
+					cdf.setOnColorListener(new OnColorListener() 
+					{	
+						@Override
+						public void onColorSelected(int color) 
+						{
+							dv.setColor(color);
+							cd.setColor(color);
+						}
+					});
+					cdf.show(getFragmentManager(), null);
+				}
+			});
+		}
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -137,18 +144,9 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void startTurn()
+	private void changeUI()
 	{
-		startTurnAt = System.currentTimeMillis();
-		pbTime.setMax(100);
-		designateDrawer();
-
-		if(isDrawer)
-			displayCategories();
-		else
-		{
-
-		}
+		getActivity().invalidateOptionsMenu();
 
 		dv.setDrawer(isDrawer);
 
@@ -166,6 +164,23 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 				h.postDelayed(this, 1000);
 			}
 		});
+	}
+
+	private void startTurn()
+	{
+		stopDrawing();
+
+		startTurnAt = System.currentTimeMillis();
+		designateDrawer();
+		
+		changeUI();
+
+		if(isDrawer)
+			displayCategories();
+		else
+		{
+
+		}
 	}
 
 	private void displayCategories()
@@ -272,6 +287,22 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	@Override
 	public void onRoomEvent(GameEvent e) 
 	{
+		String eventDrawerId = e.event.room.drawer_id;
+		// start game
+		if(drawerId == null)
+		{
+			drawerId = e.event.room.drawer_id;
+		}
+		else if(drawerId.equals(eventDrawerId))
+		{
+			// do nothing
+		}
+		// end of turn
+		else
+		{
+			startTurn();
+		}
+		
 		getGC().setCurRoom(e.event.room);
 	}
 
