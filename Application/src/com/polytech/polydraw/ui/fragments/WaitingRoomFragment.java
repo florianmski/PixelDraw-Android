@@ -15,7 +15,8 @@ import com.polytech.polydraw.adapters.ListPlayerAdapter;
 import com.polytech.polydraw.events.GameEvent;
 import com.polytech.polydraw.listeners.RoomEventListener;
 import com.polytech.polydraw.models.Player;
-import com.polytech.polydraw.ui.activities.ScoreBoardActivity;
+import com.polytech.polydraw.models.Room;
+import com.polytech.polydraw.ui.activities.GameActivity;
 import com.polytech.polydraw.utils.Constants;
 
 public class WaitingRoomFragment extends BaseFragment implements RoomEventListener
@@ -65,7 +66,7 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 			@Override
 			public void onClick(View v) 
 			{	
-				ScoreBoardActivity.launch(getActivity());
+				GameActivity.launch(getActivity());
 			}
 		});
 	}
@@ -95,9 +96,17 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 	@Override
 	public void onRoomEvent(GameEvent e) 
 	{
-		List<Player> players = e.event.room.players;
-		getGC().setPlayerList(players);
-		adapter.update(players);
+		if(e.event.room.state == Room.STATE_DRAWER_CHOOSING)
+		{
+			GameActivity.launch(getActivity());
+			getActivity().finish();
+		}
+		else
+		{
+			List<Player> players = e.event.room.players;
+			getGC().setPlayerList(players);
+			adapter.update(players);
+		}
 	}
 	
 }

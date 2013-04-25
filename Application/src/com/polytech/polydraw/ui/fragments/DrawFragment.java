@@ -1,5 +1,8 @@
 package com.polytech.polydraw.ui.fragments;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -13,13 +16,21 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.models.Category;
+import com.polytech.polydraw.models.Word;
+import com.polytech.polydraw.models.Wrapper;
 import com.polytech.polydraw.ui.fragments.ColorDialogFragment.OnColorListener;
 import com.polytech.polydraw.ui.views.CircleColorView;
 import com.polytech.polydraw.ui.views.DrawView;
+import com.polytech.polydraw.utils.ErrorHandler;
+
+import de.tavendo.autobahn.Wamp.CallHandler;
 
 public class DrawFragment extends BaseFragment
 {
 	private final static int SEND_DRAWING_DELAY = 300;
+
+	private boolean isDrawer = false;
 
 	private DrawView dv;
 	private CircleColorView cd;
@@ -62,6 +73,8 @@ public class DrawFragment extends BaseFragment
 				}
 			}
 		});
+		
+		startTurn();
 	}
 
 	@Override
@@ -115,7 +128,74 @@ public class DrawFragment extends BaseFragment
 			break;
 		}
 		return super.onOptionsItemSelected(item);
-	}	
+	}
+	
+	private void startTurn()
+	{
+		designateDrawer();
+
+		if(isDrawer)
+			displayCategories();
+		else
+		{
+			
+		}
+	}
+
+	private void displayCategories()
+	{
+		getCM().getCategories(new CallHandler() 
+		{	
+			@Override
+			public void onResult(Object result) 
+			{
+				final Wrapper w = (Wrapper) result;
+				CharSequence[] categories = new CharSequence[w.categories.size()];
+				for(int i = 0; i < w.categories.size(); i++)
+				{
+					Category c = w.categories.get(i);
+					categories[i] = c.name;
+				}
+				AlertDialog.Builder builder = new Builder(getActivity());
+				builder.setItems(categories, new DialogInterface.OnClickListener() 
+				{	
+					@Override
+					public void onClick(DialogInterface dialog, int which) 
+					{
+						getCM().getWord(w.categories.get(which), new CallHandler() 
+						{	
+							@Override
+							public void onResult(Object result) 
+							{
+								Word word = ((Wrapper)result).word;
+								getActivity().getActionBar().setTitle(word.name);
+								startDrawing();
+							}
+
+							@Override
+							public void onError(String errorUri, String errorDesc) 
+							{
+								ErrorHandler.display(getActivity(), errorUri, errorDesc);								
+							}
+						});
+					}
+				});
+
+				builder.create().show();
+			}
+
+			@Override
+			public void onError(String errorUri, String errorDesc) 
+			{
+				ErrorHandler.display(getActivity(), errorUri, errorDesc);
+			}
+		});
+	}
+
+	private void designateDrawer()
+	{
+		isDrawer = getGC().getPlayerID().equals(getGC().getCurRoom().drawer_id);
+	}
 
 	private void startDrawing()
 	{
