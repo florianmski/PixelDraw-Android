@@ -19,7 +19,6 @@ public class DrawView extends View
 	private int currentColor = 0xff51574a;
 
 	// matrix containing the case colors
-//	private String[][] matrix;
 	private List<Integer> picture;
 	// paint used to draw "pixels"
 	private Paint casePaint;
@@ -84,10 +83,7 @@ public class DrawView extends View
 			int x = i/GRID_SIZE;
 			int y = i%GRID_SIZE;
 			casePaint.setColor(picture.get(i));
-			canvas.drawRect(x*caseSize, y*caseSize, (x+1)*caseSize, (y+i)*caseSize, casePaint);
-			if(casePaint.getColor() != 0xffffffff){
-				Log.e("lol", "lol");
-			}
+			canvas.drawRect(x*caseSize, y*caseSize, (x+1)*caseSize, (y+1)*caseSize, casePaint);
 		}
 
 		// draw the grid on top of the cases
@@ -118,7 +114,6 @@ public class DrawView extends View
 		// we're out, we don't handle this, return
 		if((x <= GRID_SIZE-1 && y <= GRID_SIZE-1) && (x >= 0 && y >= 0))
 		{
-//			String caseColor = matrix[x][y];
 			int pictureIndex = x*GRID_SIZE+y;
 			int caseColor = picture.get(pictureIndex);
 			// redraw only if player use another color on the case
@@ -127,7 +122,6 @@ public class DrawView extends View
 			
 			// locate the square which correspond to the point the user has touched
 			// I do think we can think of a better algorithm but let's start with this one
-//			matrix[x][y] = currentColor;
 			picture.set(pictureIndex, currentColor);
 
 			// redraw
