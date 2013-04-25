@@ -119,7 +119,9 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 				if(e.event.room.drawer_id.equals(getGC().getPlayerID())){
 					setAdminUI();
 				}
-			}
+			}	
+			getGC().setPlayerList(e.event.room.players);
+			adapter.update(e.event.room.players);
 			break;
 		case Room.STATE_IN_GAME:
 
