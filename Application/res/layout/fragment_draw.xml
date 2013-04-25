@@ -7,7 +7,7 @@
         android:id="@+id/drawView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true" />
+        android:layout_below="@+id/progressBarTime" />
 
     <EditText
         android:id="@+id/editTextChat"
@@ -27,5 +27,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/editTextChat"
         android:text="Send" />
+
+    <ProgressBar
+        android:id="@+id/progressBarTime"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>

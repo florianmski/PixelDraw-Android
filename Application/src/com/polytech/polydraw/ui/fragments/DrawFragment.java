@@ -5,7 +5,6 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,10 +14,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.events.GameEvent;
 import com.polytech.polydraw.listeners.DrawEventListener;
+import com.polytech.polydraw.listeners.RoomEventListener;
 import com.polytech.polydraw.models.Category;
 import com.polytech.polydraw.models.Word;
 import com.polytech.polydraw.models.Wrapper;
@@ -29,16 +30,18 @@ import com.polytech.polydraw.utils.ErrorHandler;
 
 import de.tavendo.autobahn.Wamp.CallHandler;
 
-public class DrawFragment extends BaseFragment implements DrawEventListener
+public class DrawFragment extends BaseFragment implements DrawEventListener, RoomEventListener
 {
 	private final static int SEND_DRAWING_DELAY = 300;
 
 	private boolean isDrawer = false;
+	private long startTurnAt;
 
 	private DrawView dv;
 	private CircleColorView cd;
 	private EditText edtChat;
 	private Button btnChatSend;
+	private ProgressBar pbTime;
 
 	private Handler h = new Handler();
 	private Runnable r;
@@ -88,6 +91,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener
 		dv = (DrawView)v.findViewById(R.id.drawView);
 		edtChat = (EditText)v.findViewById(R.id.editTextChat);
 		btnChatSend = (Button)v.findViewById(R.id.buttonChatSend);
+		pbTime = (ProgressBar)v.findViewById(R.id.progressBarTime);
 
 		return v;
 	}
@@ -135,16 +139,33 @@ public class DrawFragment extends BaseFragment implements DrawEventListener
 
 	private void startTurn()
 	{
+		startTurnAt = System.currentTimeMillis();
+		pbTime.setMax(100);
 		designateDrawer();
 
 		if(isDrawer)
 			displayCategories();
 		else
 		{
-			
+
 		}
-		
+
 		dv.setDrawer(isDrawer);
+
+		h.post(new Runnable() 
+		{	
+			@Override
+			public void run() 
+			{
+				long timeRemaining = getGC().getCurRoom().ended_at - System.currentTimeMillis();
+				if(getGC().getCurRoom().ended_at > 0)
+				{
+					int progress = (int) ((timeRemaining * 100) / getGC().getCurRoom().ended_at);
+					pbTime.setProgress(progress);
+				}
+				h.postDelayed(this, 1000);
+			}
+		});
 	}
 
 	private void displayCategories()
@@ -220,26 +241,38 @@ public class DrawFragment extends BaseFragment implements DrawEventListener
 		if(r != null)
 			h.removeCallbacks(r);
 	}
-	
+
 
 	public void onStart()
 	{
 		super.onStart();
 		getCM().addDrawEventListener(this);
+		getCM().addRoomEventListener(this);
 	}
 
 	public void onDestroy()
 	{
 		super.onDestroy();
 		getCM().removeDrawEventListener(this);
+		getCM().removeRoomEventListener(this);
 	}
 
 	@Override
 	public void onDrawEvent(GameEvent e) 
 	{
-		
+		// TODO
+		// timer
+		// end of turn
+		// recup score
+		// 
 		if(!isDrawer)
 			dv.update(e.event.picture);
 	}
-	
+
+	@Override
+	public void onRoomEvent(GameEvent e) 
+	{
+		getGC().setCurRoom(e.event.room);
+	}
+
 }

@@ -34,18 +34,14 @@ public class ScoreBoardFragment extends DialogFragment
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
-	{
-		View v = inflater.inflate(R.layout.fragment_scoreboard, null);
-		lvScoreBoard = (ListView)v.findViewById(R.id.lvScoreBoard);
-		return v;
-	}
-
-	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) 
 	{   
+		View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_scoreboard, null);
+		lvScoreBoard = (ListView)v.findViewById(R.id.lvScoreBoard);
+		
 		return new AlertDialog.Builder(getActivity())                
 		.setTitle("Scores")
+		.setView(v)
 		.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() 
 		{
 			public void onClick(DialogInterface dialog, int whichButton) {}
