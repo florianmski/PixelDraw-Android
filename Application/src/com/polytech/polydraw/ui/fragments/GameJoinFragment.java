@@ -156,9 +156,7 @@ public class GameJoinFragment extends BaseFragment
 						@Override
 						public void onError(String errorUri, String errorDesc) {}
 					});
-				}
-
-				WaitingRoomActivity.launch(getActivity());         	
+				}         	
 			}});
 		adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() 
 		{
