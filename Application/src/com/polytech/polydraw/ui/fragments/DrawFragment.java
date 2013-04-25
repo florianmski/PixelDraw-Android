@@ -35,7 +35,7 @@ import de.tavendo.autobahn.Wamp.CallHandler;
 public class DrawFragment extends BaseFragment implements DrawEventListener, RoomEventListener, ServerEventListener
 {
 	private final static int SEND_DRAWING_DELAY = 300;
-	private final static int DRAWING_DELAY = 20*1000;
+	private final static int DRAWING_DELAY = 60*1000;
 
 	private boolean isDrawer = false;
 	private long startTurnAt;
@@ -152,25 +152,6 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 
 		dv.init();
 		dv.setDrawer(isDrawer);
-
-		h.post(new Runnable() 
-		{	
-			@Override
-			public void run() 
-			{
-//				long timeRemaining = (getGC().getCurRoom().ended_at * 1000) - System.currentTimeMillis();
-//				if(getGC().getCurRoom().ended_at > 0)
-//				{
-//					int progress = (int) ((timeRemaining * 100) / (getGC().getCurRoom().ended_at * 1000 - startTurnAt));
-//					pbTime.setProgress(progress);
-//				}
-				long timeRemaining = startTurnAt - System.currentTimeMillis() + DRAWING_DELAY;
-				int progress = (int) ((timeRemaining * 100) / (DRAWING_DELAY));
-				pbTime.setProgress(progress);
-				
-				h.postDelayed(this, 1000);
-			}
-		});
 		
 		if(isDrawer)
 			Toast.makeText(getActivity(), "You are the drawer!", Toast.LENGTH_SHORT).show();
@@ -182,7 +163,6 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	{		
 		stopDrawing();
 
-		startTurnAt = System.currentTimeMillis();
 		designateDrawer();
 		
 		changeUI();
@@ -253,6 +233,27 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 
 	private void startDrawing()
 	{
+		startTurnAt = System.currentTimeMillis();
+
+		h.post(new Runnable() 
+		{	
+			@Override
+			public void run() 
+			{
+//				long timeRemaining = (getGC().getCurRoom().ended_at * 1000) - System.currentTimeMillis();
+//				if(getGC().getCurRoom().ended_at > 0)
+//				{
+//					int progress = (int) ((timeRemaining * 100) / (getGC().getCurRoom().ended_at * 1000 - startTurnAt));
+//					pbTime.setProgress(progress);
+//				}
+				long timeRemaining = startTurnAt - System.currentTimeMillis() + DRAWING_DELAY;
+				int progress = (int) ((timeRemaining * 100) / (DRAWING_DELAY));
+				pbTime.setProgress(progress);
+				
+				h.postDelayed(this, 1000);
+			}
+		});
+		
 		h.post(r = new Runnable() 
 		{	
 			@Override
@@ -293,11 +294,6 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	@Override
 	public void onDrawEvent(GameEvent e) 
 	{
-		// TODO
-		// timer
-		// end of turn
-		// recup score
-		// 
 		if(!isDrawer)
 			dv.update(e.event.picture);
 	}
