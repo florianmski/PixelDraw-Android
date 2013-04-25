@@ -21,6 +21,7 @@ import com.polytech.polydraw.api.CommunicationManager;
 import com.polytech.polydraw.events.GameEvent;
 import com.polytech.polydraw.listeners.DrawEventListener;
 import com.polytech.polydraw.listeners.RoomEventListener;
+import com.polytech.polydraw.listeners.ServerEventListener;
 import com.polytech.polydraw.models.Category;
 import com.polytech.polydraw.models.Word;
 import com.polytech.polydraw.models.Wrapper;
@@ -295,6 +296,13 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	@Override
 	public void onRoomEvent(GameEvent e) 
 	{
+		if(!isDrawer)
+		{
+			String category = e.event.room.category_name;
+			if(category != null)
+				getActivity().getActionBar().setTitle("Category : " + category);
+		}
+		
 		String eventDrawerId = e.event.room.drawer_id;
 		// start game
 		if(drawerId == null)
@@ -308,6 +316,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		// end of turn
 		else
 		{
+			getGC().setCurRoom(e.event.room);
 			startTurn();
 		}
 		
