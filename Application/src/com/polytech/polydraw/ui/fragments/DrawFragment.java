@@ -1,6 +1,7 @@
 package com.polytech.polydraw.ui.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,11 +19,16 @@ import com.polytech.polydraw.ui.views.DrawView;
 
 public class DrawFragment extends BaseFragment
 {
+	private final static int SEND_DRAWING_DELAY = 300;
+
 	private DrawView dv;
 	private CircleColorView cd;
 	private EditText edtChat;
 	private Button btnChatSend;
-	
+
+	private Handler h = new Handler();
+	private Runnable r;
+
 	public static DrawFragment newInstance()
 	{
 		DrawFragment f = new DrawFragment();
@@ -33,17 +39,17 @@ public class DrawFragment extends BaseFragment
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		
+
 		setHasOptionsMenu(true);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
 
 		cd = (CircleColorView) getActivity().getLayoutInflater().inflate(R.layout.view_color, null);
-		
+
 		btnChatSend.setOnClickListener(new OnClickListener() 
 		{	
 			@Override
@@ -62,11 +68,11 @@ public class DrawFragment extends BaseFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
 		View v = inflater.inflate(R.layout.fragment_draw, null);
-		
+
 		dv = (DrawView)v.findViewById(R.id.drawView);
 		edtChat = (EditText)v.findViewById(R.id.editTextChat);
 		btnChatSend = (Button)v.findViewById(R.id.buttonChatSend);
-		
+
 		return v;
 	}
 
@@ -74,9 +80,10 @@ public class DrawFragment extends BaseFragment
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
 	{
 		MenuItem colorItem = menu.add(Menu.NONE, R.id.menu_color, Menu.NONE, "color");
-		colorItem.setActionView(cd)
+		colorItem
+		.setActionView(cd)
 		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		
+
 		cd.setOnClickListener(new OnClickListener() 
 		{	
 			@Override
@@ -95,7 +102,7 @@ public class DrawFragment extends BaseFragment
 				cdf.show(getFragmentManager(), null);
 			}
 		});
-		
+
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -109,7 +116,25 @@ public class DrawFragment extends BaseFragment
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}	
+
+	private void startDrawing()
+	{
+		h.post(r = new Runnable() 
+		{	
+			@Override
+			public void run() 
+			{
+				// TODO
+				// getCM().sendDrawMessage(dv.getDrawing());
+				h.postDelayed(this, SEND_DRAWING_DELAY);
+			}
+		});
 	}
-	
-	
+
+	private void stopDrawing()
+	{
+		if(r != null)
+			h.removeCallbacks(r);
+	}
 }

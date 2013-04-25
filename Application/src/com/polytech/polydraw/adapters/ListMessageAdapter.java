@@ -40,19 +40,19 @@ public class ListMessageAdapter extends BaseAdapter
 	{
 		return messages.get(position);
 	}
-
+	
 	@Override
 	public long getItemId(int position) 
 	{
 		return position;
 	}
-
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
 		final ViewHolder holder;
-
-        if (convertView == null)
+		
+        if(convertView == null)
         {
             convertView = LayoutInflater.from(context).inflate(R.layout.list_item_message, parent, false);
             holder = new ViewHolder();
@@ -60,7 +60,7 @@ public class ListMessageAdapter extends BaseAdapter
             holder.tvMessage = (TextView)convertView.findViewById(R.id.textViewMessage);
             
             convertView.setTag(holder);
-        } 
+        }
         else
             holder = (ViewHolder) convertView.getTag();
         
