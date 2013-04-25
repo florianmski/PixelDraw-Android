@@ -24,6 +24,12 @@ public class ListPlayerAdapter extends BaseAdapter
 		this.players = players;
 	}
 	
+	public void update(List<Player> players)
+	{
+		this.players = players;
+		this.notifyDataSetChanged();
+	}
+	
 	public void addPlayer(Player p)
 	{
 		players.add(p);

@@ -150,8 +150,7 @@ public class GameJoinFragment extends BaseFragment
 	public void onRoomJoined(Room r)
 	{
 		getGC().setCurRoom(r);
-		// TODO
-//		getGC().setPlayerList(r.)
+		getGC().setPlayerList(r.players);
 		getCM().subscribeGame();
 		WaitingRoomActivity.launch(getActivity());
 	}
