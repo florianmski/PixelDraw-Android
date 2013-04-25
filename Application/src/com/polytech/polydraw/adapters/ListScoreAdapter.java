@@ -11,35 +11,30 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.models.Player;
 
 
 public class ListScoreAdapter extends BaseAdapter
 {	
-	private List<String> scores = new ArrayList<String>();
+	private List<Player> players = new ArrayList<Player>();
 	private Context context;
 
-	public ListScoreAdapter(Context context, List<String> scores)
+	public ListScoreAdapter(Context context, List<Player> players)
 	{
 		this.context = context;
-		this.scores = scores;
-	}
-
-	public void addMessage(String message)
-	{
-		scores.add(message);
-		this.notifyDataSetChanged();
+		this.players = players;
 	}
 
 	@Override
 	public int getCount() 
 	{
-		return scores.size();
+		return players.size();
 	}
 
 	@Override
 	public Object getItem(int position) 
 	{
-		return scores.get(position);
+		return players.get(position);
 	}
 
 	@Override
@@ -65,8 +60,9 @@ public class ListScoreAdapter extends BaseAdapter
 		else
 			holder = (ViewHolder) convertView.getTag();
 
-		String message = scores.get(position);
-		holder.tvScore.setText(message);
+		Player p = players.get(position);
+		holder.tvPlayer.setText(p.name);
+		holder.tvScore.setText(String.valueOf(p.score));
 
 		return convertView;
 	}

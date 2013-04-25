@@ -67,7 +67,7 @@ public class ListMessageAdapter extends BaseAdapter
 			holder = (ViewHolder) convertView.getTag();
 
 		Message m = messages.get(position);
-		Player p = GameContext.getInstance().getPlayerList().get(m.player_id);
+		Player p = GameContext.getInstance().getPlayerMap().get(m.player_id);
 		holder.tvPlayer.setText(p == null ? "Server" : p.name);
 		holder.tvMessage.setText(m.msg);
 

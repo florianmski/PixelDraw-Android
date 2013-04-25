@@ -1,5 +1,6 @@
 package com.polytech.polydraw.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,8 +43,12 @@ public class GameContext {
 		this.player_id = player_id;
 	}
 
-	public HashMap<String, Player> getPlayerList() {
+	public HashMap<String, Player> getPlayerMap() {
 		return mPlayerRegister;
+	}
+
+	public List<Player> getPlayerList() {
+		return new ArrayList<Player>(mPlayerRegister.values());
 	}
 
 	public void setPlayerList(List<Player> playerList) {

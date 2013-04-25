@@ -7,8 +7,8 @@ import android.os.Bundle;
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.ui.fragments.GameJoinFragment;
 
-public class GameJoinActivity extends BaseActivity{
-	
+public class GameJoinActivity extends BaseActivity
+{	
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);

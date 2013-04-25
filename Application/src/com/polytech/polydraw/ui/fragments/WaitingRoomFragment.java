@@ -1,6 +1,5 @@
 package com.polytech.polydraw.ui.fragments;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -59,7 +58,7 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 		if(!adminId.equals(getGC().getPlayerID()))
 				btnLaunch.setVisibility(View.GONE);
 		
-		lvPlayer.setAdapter(adapter = new ListPlayerAdapter(getActivity(), new ArrayList<Player>(getGC().getPlayerList().values())));
+		lvPlayer.setAdapter(adapter = new ListPlayerAdapter(getActivity(), getGC().getPlayerList()));
 			
 		btnLaunch.setOnClickListener(new OnClickListener() 
 		{	
