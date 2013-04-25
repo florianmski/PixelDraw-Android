@@ -72,7 +72,7 @@ public class ListGameAdapter extends BaseAdapter
         
         Room r = games.get(position);
         holder.tvGame.setText(r.name);
-        holder.tvNbPlayer.setText(r.count_player);
+        holder.tvNbPlayer.setText(String.valueOf(r.count_player));
 		return convertView;
 	}
 	
