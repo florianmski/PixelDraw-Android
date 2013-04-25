@@ -1,20 +1,16 @@
 package com.polytech.polydraw.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.models.Room;
-
-
 
 public class GameContext {
 	
 	private String player_name;
-	private String player_id;
-//	private String room_id;
-	
-	private ArrayList<Player> mPlayerList;
+	private String player_id;	
+	private HashMap<String, Player> mPlayerRegister;
 	private Room mCurRoom;
-	
 	private static GameContext mThis;
 	
 	private GameContext(){
@@ -46,20 +42,14 @@ public class GameContext {
 		this.player_id = player_id;
 	}
 
-//	public String getRoomID() {
-//		return room_id;
-//	}
-//
-//	public void setRoomID(String room_id) {
-//		this.room_id = room_id;
-//	}
-
-	public ArrayList<Player> getPlayerList() {
-		return mPlayerList;
+	public HashMap<String, Player> getPlayerList() {
+		return mPlayerRegister;
 	}
 
-	public void setPlayerList(ArrayList<Player> mPlayerList) {
-		this.mPlayerList = mPlayerList;
+	public void setPlayerList(ArrayList<Player> playerList) {
+		for(int i=0; i<playerList.size();i++){
+			this.mPlayerRegister.put(playerList.get(i).id, playerList.get(i));
+		}
 	}
 
 	public Room getCurRoom() {
