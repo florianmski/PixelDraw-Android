@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.api.GameContext;
 import com.polytech.polydraw.models.Message;
 
 public class ListMessageAdapter extends BaseAdapter
@@ -65,7 +66,7 @@ public class ListMessageAdapter extends BaseAdapter
             holder = (ViewHolder) convertView.getTag();
         
         Message m = messages.get(position);
-        holder.tvPlayer.setText(m.msg);
+        holder.tvPlayer.setText(GameContext.getInstance().getPlayerList().get(m.player_id).name);
         holder.tvMessage.setText(m.msg);
         
 		return convertView;

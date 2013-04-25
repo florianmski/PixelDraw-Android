@@ -1,6 +1,7 @@
 package com.polytech.polydraw.ui.fragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,10 +13,12 @@ import android.widget.ListView;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListPlayerAdapter;
+import com.polytech.polydraw.events.GameEvent;
+import com.polytech.polydraw.listeners.RoomEventListener;
 import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.ui.activities.ScoreBoardActivity;
 
-public class WaitingRoomFragment extends BaseFragment
+public class WaitingRoomFragment extends BaseFragment implements RoomEventListener
 {	
 	private ListView lvPlayer;
 	private ListPlayerAdapter adapter;
@@ -40,7 +43,7 @@ public class WaitingRoomFragment extends BaseFragment
 	{
 		super.onActivityCreated(savedInstanceState);
 		
-		lvPlayer.setAdapter(adapter = new ListPlayerAdapter(getActivity(), new ArrayList<Player>()));
+		lvPlayer.setAdapter(adapter = new ListPlayerAdapter(getActivity(), new ArrayList<Player>(getGC().getPlayerList().values())));
 			
 		btnLaunch.setOnClickListener(new OnClickListener() 
 		{	
@@ -61,4 +64,24 @@ public class WaitingRoomFragment extends BaseFragment
 		return v;
 	}	
 
+	
+	public void onStart()
+	{
+		super.onStart();
+		getCM().addRoomEventListener(this);
+	}
+	
+	public void onDestroy()
+	{
+		super.onDestroy();
+		getCM().removeRoomEventListener(this);
+	}
+
+	@Override
+	public void onRoomEvent(GameEvent e) 
+	{
+		List<Player> players = e.event.players;
+		getGC().setPlayerList(players);
+		adapter.update(players);
+	}
 }

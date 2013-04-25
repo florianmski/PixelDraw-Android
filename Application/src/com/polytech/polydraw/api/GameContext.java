@@ -1,7 +1,8 @@
 package com.polytech.polydraw.api;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.models.Room;
 
@@ -45,7 +46,7 @@ public class GameContext {
 		return mPlayerRegister;
 	}
 
-	public void setPlayerList(ArrayList<Player> playerList) {
+	public void setPlayerList(List<Player> playerList) {
 		for(int i=0; i<playerList.size();i++){
 			this.mPlayerRegister.put(playerList.get(i).id, playerList.get(i));
 		}
