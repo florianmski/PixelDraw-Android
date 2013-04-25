@@ -149,6 +149,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	{
 		getActivity().invalidateOptionsMenu();
 
+		dv.init();
 		dv.setDrawer(isDrawer);
 
 		h.post(new Runnable() 
@@ -303,7 +304,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		// start game
 		if(drawerId == null)
 		{
-			drawerId = e.event.room.drawer_id;
+			drawerId = eventDrawerId;
 		}
 		else if(drawerId.equals(eventDrawerId))
 		{
@@ -313,6 +314,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		else
 		{
 			getGC().setCurRoom(e.event.room);
+			drawerId = eventDrawerId;
 			startTurn();
 		}
 		

@@ -46,7 +46,7 @@ public class DrawView extends View
 		init();
 	}
 
-	private void init()
+	public void init()
 	{
 		// let's start by filling the matrix with white
 		picture = new ArrayList<Integer>(GRID_SIZE*GRID_SIZE);
