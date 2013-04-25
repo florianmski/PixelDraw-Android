@@ -50,7 +50,6 @@ public class GameJoinFragment extends BaseFragment
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-
 		getCM().getRoomList(new CallHandler() 
 		{	
 			@Override
@@ -203,5 +202,11 @@ public class GameJoinFragment extends BaseFragment
 
 		});
 
+	}
+	
+	public void onResume(){
+		
+		super.onResume();
+		refreshRoomList();
 	}
 }

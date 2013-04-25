@@ -58,6 +58,7 @@ public class WaitingRoomActivity extends ChatEnabledActivity
 	        				
 	        				//CommunicationManager.getInstance().closeCommunication();	
 	        				//MenuActivity.launchClearTop(WaitingRoomActivity.this);
+	        			
 	        				WaitingRoomActivity.super.onBackPressed();
 	        			}
 	        			
