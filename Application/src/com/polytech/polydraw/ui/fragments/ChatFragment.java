@@ -14,8 +14,10 @@ import android.widget.ListView;
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListMessageAdapter;
 import com.polytech.polydraw.events.GameEvent;
+import com.polytech.polydraw.events.GameEventWrapper;
 import com.polytech.polydraw.listeners.PlayerEventListener;
 import com.polytech.polydraw.listeners.ServerEventListener;
+import com.polytech.polydraw.models.Message;
 import com.polytech.polydraw.ui.activities.ChatEnabledActivity;
 
 public class ChatFragment extends BaseFragment implements PlayerEventListener, ServerEventListener
@@ -45,7 +47,7 @@ public class ChatFragment extends BaseFragment implements PlayerEventListener, S
 	{
 		super.onActivityCreated(savedInstanceState);
 		
-		lvChat.setAdapter(adapter = new ListMessageAdapter(getActivity(), new ArrayList<String>()));
+		lvChat.setAdapter(adapter = new ListMessageAdapter(getActivity(), new ArrayList<Message>()));
 
 		btnChatSend.setOnClickListener(new OnClickListener() 
 		{	
@@ -87,12 +89,15 @@ public class ChatFragment extends BaseFragment implements PlayerEventListener, S
 		getCM().removeServerEventListener(this);
 	}
 
-	public void onNewMessageReceived(String message)
+	public void onNewMessageReceived(GameEventWrapper e)
 	{
+		Message m = new Message();
+		m.player_id = e.player_id;
+		m.msg = e.msg;
 		// if sliding menu is not opened, don't show the new message icon
 		if(!((ChatEnabledActivity)getActivity()).getSlidingMenu().isMenuShowing())
 			displayChatIcon(true);
-		adapter.addMessage(message);
+		adapter.addMessage(m);
 	}
 
 	public void displayChatIcon(boolean visible)
@@ -103,12 +108,12 @@ public class ChatFragment extends BaseFragment implements PlayerEventListener, S
 	@Override
 	public void onPlayerEvent(GameEvent e) 
 	{
-		onNewMessageReceived(e.event.msg);
+		onNewMessageReceived(e.event);
 	}
 
 	@Override
 	public void onServerEvent(GameEvent e) 
 	{
-		onNewMessageReceived(e.event.msg);
+		onNewMessageReceived(e.event);
 	}
 }

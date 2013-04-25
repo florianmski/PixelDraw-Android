@@ -10,19 +10,20 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.models.Message;
 
 public class ListMessageAdapter extends BaseAdapter
 {
-	private List<String> messages;
+	private List<Message> messages;
 	private Context context;
 	
-	public ListMessageAdapter(Context context, List<String> messages)
+	public ListMessageAdapter(Context context, List<Message> messages)
 	{
 		this.context = context;
 		this.messages = messages;
 	}
 	
-	public void addMessage(String message)
+	public void addMessage(Message message)
 	{
 		messages.add(message);
 		this.notifyDataSetChanged();
@@ -51,7 +52,7 @@ public class ListMessageAdapter extends BaseAdapter
 	{
 		final ViewHolder holder;
 
-        if (convertView == null) 
+        if (convertView == null)
         {
             convertView = LayoutInflater.from(context).inflate(R.layout.list_item_message, parent, false);
             holder = new ViewHolder();
@@ -63,8 +64,9 @@ public class ListMessageAdapter extends BaseAdapter
         else
             holder = (ViewHolder) convertView.getTag();
         
-        String message = messages.get(position);
-        holder.tvMessage.setText(message);
+        Message m = messages.get(position);
+        holder.tvPlayer.setText(m.msg);
+        holder.tvMessage.setText(m.msg);
         
 		return convertView;
 	}

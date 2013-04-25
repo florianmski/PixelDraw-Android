@@ -1,6 +1,5 @@
 package com.polytech.polydraw.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
