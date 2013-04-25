@@ -156,6 +156,11 @@ public class DrawView extends View
 		this.drawer = drawer;
 	}
 	
+	public String[][] getDrawing()
+	{
+		return matrix;
+	}
+	
 	public void setOnNewDrawingDataListener(OnNewDrawingDataListener listener)
 	{
 		this.listener = listener;

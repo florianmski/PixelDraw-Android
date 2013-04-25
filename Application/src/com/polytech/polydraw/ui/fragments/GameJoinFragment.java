@@ -1,6 +1,6 @@
 package com.polytech.polydraw.ui.fragments;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListGameAdapter;
 import com.polytech.polydraw.models.Room;
@@ -45,19 +46,20 @@ public class GameJoinFragment extends BaseFragment
 	{
 		super.onActivityCreated(savedInstanceState);
 	
-		getCM().getRoomList(new CallHandler() {
-			
+		getCM().getRoomList(new CallHandler() 
+		{	
 			@Override
-			public void onResult(Object result) {
-				
+			public void onResult(Object result) 
+			{	
 				Wrapper wr = (Wrapper)result;
-				ArrayList<Room> list_room = wr.rooms;
+				List<Room> list_room = wr.rooms;
 				lvGame.setAdapter(adapter = new ListGameAdapter(getActivity(), list_room));
 			}
 			
 			@Override
-			public void onError(String errorUri, String errorDesc) {
-			}
+
+			public void onError(String errorUri, String errorDesc) {}
+
 		});
 		
 			
@@ -149,6 +151,8 @@ public class GameJoinFragment extends BaseFragment
 	public void onRoomJoined(Room r)
 	{
 		getGC().setCurRoom(r);
+		// TODO
+//		getGC().setPlayerList(r.)
 		getCM().subscribeGame();
 		WaitingRoomActivity.launch(getActivity());
 	}
