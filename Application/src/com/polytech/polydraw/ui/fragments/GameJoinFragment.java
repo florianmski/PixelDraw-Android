@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -171,6 +172,7 @@ public class GameJoinFragment extends BaseFragment
 	public void onRoomJoined(Room r)
 	{
 		getGC().setCurRoom(r);
+		Log.e("test", "null ? " + (r.players == null));
 		getGC().setPlayerList(r.players);
 		getCM().subscribeGame();
 		WaitingRoomActivity.launch(getActivity());

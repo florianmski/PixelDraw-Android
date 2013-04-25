@@ -12,18 +12,19 @@ import android.widget.TextView;
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.api.GameContext;
 import com.polytech.polydraw.models.Message;
+import com.polytech.polydraw.models.Player;
 
 public class ListMessageAdapter extends BaseAdapter
 {
 	private List<Message> messages;
 	private Context context;
-	
+
 	public ListMessageAdapter(Context context, List<Message> messages)
 	{
 		this.context = context;
 		this.messages = messages;
 	}
-	
+
 	public void addMessage(Message message)
 	{
 		messages.add(message);
@@ -41,40 +42,41 @@ public class ListMessageAdapter extends BaseAdapter
 	{
 		return messages.get(position);
 	}
-	
+
 	@Override
 	public long getItemId(int position) 
 	{
 		return position;
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
 		final ViewHolder holder;
-		
-        if(convertView == null)
-        {
-            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_message, parent, false);
-            holder = new ViewHolder();
-            holder.tvPlayer = (TextView)convertView.findViewById(R.id.textViewPlayer);
-            holder.tvMessage = (TextView)convertView.findViewById(R.id.textViewMessage);
-            
-            convertView.setTag(holder);
-        }
-        else
-            holder = (ViewHolder) convertView.getTag();
-        
-        Message m = messages.get(position);
-        holder.tvPlayer.setText(GameContext.getInstance().getPlayerList().get(m.player_id).name);
-        holder.tvMessage.setText(m.msg);
-        
+
+		if(convertView == null)
+		{
+			convertView = LayoutInflater.from(context).inflate(R.layout.list_item_message, parent, false);
+			holder = new ViewHolder();
+			holder.tvPlayer = (TextView)convertView.findViewById(R.id.textViewPlayer);
+			holder.tvMessage = (TextView)convertView.findViewById(R.id.textViewMessage);
+
+			convertView.setTag(holder);
+		}
+		else
+			holder = (ViewHolder) convertView.getTag();
+
+		Message m = messages.get(position);
+		Player p = GameContext.getInstance().getPlayerList().get(m.player_id);
+		holder.tvPlayer.setText(p == null ? "Server" : p.name);
+		holder.tvMessage.setText(m.msg);
+
 		return convertView;
 	}
-	
-    private static class ViewHolder 
-    {
-    	private TextView tvPlayer;
-    	private TextView tvMessage;
-    }	
+
+	private static class ViewHolder 
+	{
+		private TextView tvPlayer;
+		private TextView tvMessage;
+	}	
 }

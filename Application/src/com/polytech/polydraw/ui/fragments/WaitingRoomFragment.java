@@ -80,7 +80,7 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 	@Override
 	public void onRoomEvent(GameEvent e) 
 	{
-		List<Player> players = e.event.players;
+		List<Player> players = e.event.room.players;
 		getGC().setPlayerList(players);
 		adapter.update(players);
 	}

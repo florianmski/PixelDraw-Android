@@ -10,6 +10,5 @@ public class GameEventWrapper {
 	public String player_id;
 	public String msg;
 	public Room room;
-	public ArrayList<Player> players;
 	public ArrayList<Pixel> picture;
 }
