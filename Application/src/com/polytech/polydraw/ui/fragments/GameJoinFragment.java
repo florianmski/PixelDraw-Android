@@ -179,7 +179,7 @@ public class GameJoinFragment extends BaseFragment
 		getGC().setCurRoom(r);
 		getGC().setPlayerList(r.players);
 		getCM().subscribeGame();
-		WaitingRoomActivity.launch(getActivity(), r.admin_id);
+		WaitingRoomActivity.launch(getActivity(), r.drawer_id);
 	}
 
 	public void refreshRoomList()
