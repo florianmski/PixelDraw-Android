@@ -132,17 +132,22 @@ public class CommunicationManager{
 	}
 
 	public void sendDrawMessage(List<Integer> picture){
-		String room = mGameContext.getCurRoom().id;
-		
-		GameEventWrapper core = new GameEventWrapper();
-		core.player_id = mGameContext.getPlayerID();
-		core.picture = picture;
-		
-		GameEvent event = new GameEvent();
-		event.type = 3;
-		event.time_stamp = System.currentTimeMillis();
-		event.event = core;
-		mConnection.publish(room, event);
+		if(mConnection.isConnected()){
+			String room = mGameContext.getCurRoom().id;
+			
+			GameEventWrapper core = new GameEventWrapper();
+			core.player_id = mGameContext.getPlayerID();
+			core.picture = picture;
+			
+			GameEvent event = new GameEvent();
+			event.type = 3;
+			event.time_stamp = System.currentTimeMillis();
+			event.event = core;
+			mConnection.publish(room, event);
+		}
+		else{
+			Log.e("CommunicationManager", "Trying to send draw message while connection is down");
+		}
 	}
 	
 	/**
