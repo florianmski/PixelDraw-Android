@@ -1,5 +1,7 @@
 package com.polytech.polydraw.ui.fragments;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -125,7 +127,7 @@ public class DrawFragment extends BaseFragment
 			public void run() 
 			{
 				// TODO
-				// getCM().sendDrawMessage(dv.getDrawing());
+				 getCM().sendDrawMessage(dv.getDrawing());
 				h.postDelayed(this, SEND_DRAWING_DELAY);
 			}
 		});
