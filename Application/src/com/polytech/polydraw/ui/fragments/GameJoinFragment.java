@@ -47,8 +47,26 @@ public class GameJoinFragment extends BaseFragment
 	{
 		super.onActivityCreated(savedInstanceState);
 
-
-		lvGame.setAdapter(this.adapter = new ListGameAdapter(getActivity(), new ArrayList<Room>()));	
+		
+		getCM().getRoomList(new CallHandler() {
+			
+			@Override
+			public void onResult(Object result) {
+				// TODO Auto-generated method stub
+				Wrapper wr = (Wrapper)result;
+				ArrayList<Room> list_room = wr.rooms;
+				
+				lvGame.setAdapter(adapter = new ListGameAdapter(getActivity(), list_room));
+			}
+			
+			@Override
+			public void onError(String errorUri, String errorDesc) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+			
 
 		lvGame.setOnItemClickListener(new OnItemClickListener() 
 		{
