@@ -15,7 +15,7 @@ import com.polytech.polydraw.models.Room;
 
 public class ListGameAdapter extends BaseAdapter
 {	
-	private List<Room> games = new ArrayList<Room>();
+	private List<Room> games;
 	private Context context;
 	
 	public ListGameAdapter(Context context, List<Room> games)
@@ -27,6 +27,12 @@ public class ListGameAdapter extends BaseAdapter
 	public void addRoom(Room r)
 	{
 		games.add(r);
+		this.notifyDataSetChanged();
+	}
+	
+	public void removeRoom(Room r)
+	{
+		games.remove(r);
 		this.notifyDataSetChanged();
 	}
 

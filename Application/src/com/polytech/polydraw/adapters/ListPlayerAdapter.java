@@ -1,6 +1,5 @@
 package com.polytech.polydraw.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -11,20 +10,29 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.models.Player;
+import com.polytech.polydraw.models.Room;
 
-public class ListPlayerAdapter extends BaseAdapter{
-	private List<String> players = new ArrayList<String>();
+public class ListPlayerAdapter extends BaseAdapter
+{
+	private List<Player> players;
 	private Context context;
 	
-	public ListPlayerAdapter(Context context, List<String> players)
+	public ListPlayerAdapter(Context context, List<Player> players)
 	{
 		this.context = context;
 		this.players = players;
 	}
 	
-	public void addMessage(String message)
+	public void addPlayer(Player p)
 	{
-		players.add(message);
+		players.add(p);
+		this.notifyDataSetChanged();
+	}
+	
+	public void removePlayer(Room r)
+	{
+		players.remove(r);
 		this.notifyDataSetChanged();
 	}
 
@@ -61,8 +69,8 @@ public class ListPlayerAdapter extends BaseAdapter{
         else
             holder = (ViewHolder) convertView.getTag();
         
-        String message = players.get(position);
-        holder.tvPlayer.setText(message);
+        Player p = players.get(position);
+        holder.tvPlayer.setText(p.name);
         
 		return convertView;
 	}

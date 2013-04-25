@@ -1,7 +1,6 @@
 package com.polytech.polydraw.ui.fragments;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.widget.ListView;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListPlayerAdapter;
+import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.ui.activities.ScoreBoardActivity;
 
 public class WaitingRoomFragment extends BaseFragment
@@ -39,11 +39,8 @@ public class WaitingRoomFragment extends BaseFragment
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-		final List<String> players = new ArrayList<String>();
-		for(int i = 0; i < 6; i++)			
-			players.add("Player "+i);
 		
-		lvPlayer.setAdapter(adapter = new ListPlayerAdapter(getActivity(), players));
+		lvPlayer.setAdapter(adapter = new ListPlayerAdapter(getActivity(), new ArrayList<Player>()));
 			
 		btnLaunch.setOnClickListener(new OnClickListener() 
 		{	

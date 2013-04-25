@@ -1,6 +1,5 @@
 package com.polytech.polydraw.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -14,7 +13,7 @@ import com.polytech.polydraw.R;
 
 public class ListMessageAdapter extends BaseAdapter
 {
-	private List<String> messages = new ArrayList<String>();
+	private List<String> messages;
 	private Context context;
 	
 	public ListMessageAdapter(Context context, List<String> messages)
