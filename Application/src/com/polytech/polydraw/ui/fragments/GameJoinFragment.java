@@ -6,6 +6,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -51,9 +55,7 @@ public class GameJoinFragment extends BaseFragment
 			@Override
 			public void onResult(Object result) 
 			{	
-				Wrapper wr = (Wrapper)result;
-				List<Room> list_room = wr.rooms;
-				lvGame.setAdapter(adapter = new ListGameAdapter(getActivity(), list_room));
+				refreshRoomList();
 			}
 			
 			@Override
@@ -61,8 +63,6 @@ public class GameJoinFragment extends BaseFragment
 			public void onError(String errorUri, String errorDesc) {}
 
 		});
-		
-			
 
 		lvGame.setOnItemClickListener(new OnItemClickListener() 
 		{
@@ -95,6 +95,26 @@ public class GameJoinFragment extends BaseFragment
 		});	
 	}
 
+	
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+	{
+		MenuItem refreshItem = menu.add(Menu.NONE, R.id.menu_color, Menu.NONE, "color");
+		
+		refreshItem.setIcon(R.drawable.ic_navigation_refresh)
+		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		
+		refreshItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				refreshRoomList();
+				return false;
+			}
+		});
+	
+	}
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
@@ -156,5 +176,25 @@ public class GameJoinFragment extends BaseFragment
 		getCM().subscribeGame();
 		WaitingRoomActivity.launch(getActivity());
 	}
+	
+	public void refreshRoomList(){
+		
+		getCM().getRoomList(new CallHandler() 
+		{	
+			@Override
+			public void onResult(Object result) 
+			{	
+				Wrapper wr = (Wrapper)result;
+				List<Room> list_room = wr.rooms;
+				lvGame.setAdapter(adapter = new ListGameAdapter(getActivity(), list_room));
+			}
+			
+			@Override
+		public void onError(String errorUri, String errorDesc) {}
+
+		});
+		
+	}
+	
 	
 }
