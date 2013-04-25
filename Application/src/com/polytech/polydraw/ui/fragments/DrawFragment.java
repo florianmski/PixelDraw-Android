@@ -31,7 +31,7 @@ import com.polytech.polydraw.utils.ErrorHandler;
 
 import de.tavendo.autobahn.Wamp.CallHandler;
 
-public class DrawFragment extends BaseFragment implements DrawEventListener, RoomEventListener, ServerEventListener
+public class DrawFragment extends BaseFragment implements DrawEventListener, RoomEventListener
 {
 	private final static int SEND_DRAWING_DELAY = 300;
 	private final static int DRAWING_DELAY = 20*1000;
@@ -268,7 +268,6 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		super.onStart();
 		getCM().addDrawEventListener(this);
 		getCM().addRoomEventListener(this);
-		getCM().addServerEventListener(this);
 	}
 
 	public void onDestroy()
@@ -276,7 +275,6 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		super.onDestroy();
 		getCM().removeDrawEventListener(this);
 		getCM().removeRoomEventListener(this);
-		getCM().removeServerEventListener(this);
 	}
 
 	@Override
@@ -314,21 +312,11 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		// end of turn
 		else
 		{
+			getGC().setCurRoom(e.event.room);
 			startTurn();
 		}
 		
 		getGC().setCurRoom(e.event.room);
-	}
-
-	@Override
-	public void onServerEvent(GameEvent e) 
-	{
-		String msg = e.event.msg;
-		if(msg != null)
-		{
-			if(msg.equals("Game ends"))
-				startTurn();
-		}
 	}
 
 }
