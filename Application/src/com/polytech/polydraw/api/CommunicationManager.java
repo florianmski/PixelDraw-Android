@@ -37,6 +37,10 @@ public class CommunicationManager{
 		return mThis;
 	}
 	
+	private CloseConnectionHandler mCloseConnectionHandler;
+	public void setConnectionCloseListener(CloseConnectionHandler l){
+		mCloseConnectionHandler = l;
+	}
     /**
      * To be call in the first activity of the game to start connection
      */
@@ -54,6 +58,7 @@ public class CommunicationManager{
 		    @Override
 		    public void onClose(int code, String reason) {
 		       Log.d(TAG, "Connection lost.");
+		       mCloseConnectionHandler.onConnectionClose(code, reason);
 		    }
 		});
 	}
