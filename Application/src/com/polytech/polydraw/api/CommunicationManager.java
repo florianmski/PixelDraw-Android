@@ -9,7 +9,6 @@ import com.polytech.polydraw.listeners.PlayerEventListener;
 import com.polytech.polydraw.listeners.RoomEventListener;
 import com.polytech.polydraw.listeners.ServerEventListener;
 import com.polytech.polydraw.models.Category;
-import com.polytech.polydraw.models.Pixel;
 import com.polytech.polydraw.models.Wrapper;
 import android.util.Log;
 import de.tavendo.autobahn.Wamp.CallHandler;
@@ -119,7 +118,7 @@ public class CommunicationManager{
 		mConnection.publish(room, eve);
 	}
 
-	public void sendDrawMessage(ArrayList<Pixel> picture){
+	public void sendDrawMessage(ArrayList<Integer> picture){
 		String room = mGameContext.getCurRoom().id;
 		
 		GameEventWrapper core = new GameEventWrapper();
