@@ -46,7 +46,7 @@ public class ChatFragment extends BaseFragment implements PlayerEventListener, S
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-		
+
 		lvChat.setAdapter(adapter = new ListMessageAdapter(getActivity(), new ArrayList<Message>()));
 
 		btnChatSend.setOnClickListener(new OnClickListener() 
@@ -72,19 +72,19 @@ public class ChatFragment extends BaseFragment implements PlayerEventListener, S
 
 		return v;
 	}
-	
+
 	public void onStart()
 	{
 		super.onStart();
-		
+
 		getCM().addPlayerEventListener(this);
 		getCM().addServerEventListener(this);
 	}
-	
+
 	public void onDestroy()
 	{
 		super.onDestroy();
-		
+
 		getCM().removePlayerEventListener(this);
 		getCM().removeServerEventListener(this);
 	}
@@ -108,7 +108,8 @@ public class ChatFragment extends BaseFragment implements PlayerEventListener, S
 	@Override
 	public void onPlayerEvent(GameEvent e) 
 	{
-		onNewMessageReceived(e.event);
+		if(e.event.player_id != null)
+			onNewMessageReceived(e.event);
 	}
 
 	@Override
