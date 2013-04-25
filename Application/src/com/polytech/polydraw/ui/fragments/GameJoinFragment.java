@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListGameAdapter;
 import com.polytech.polydraw.models.Room;
+import com.polytech.polydraw.models.RoomList;
 import com.polytech.polydraw.models.Wrapper;
 import com.polytech.polydraw.ui.activities.WaitingRoomActivity;
 
@@ -52,7 +54,26 @@ public class GameJoinFragment extends BaseFragment
 		final List<String> games = new ArrayList<String>();
 		for(int i = 0; i < 7; i++)
 			games.add("Game : " + i);
-
+		
+		
+		getCM().getRoomList(new CallHandler() {
+			
+			@Override
+			public void onResult(Object result) {
+				
+				Wrapper wr = (Wrapper) result;
+				ArrayList<Room> r = wr.rooms;
+						
+			}
+			
+			@Override
+			public void onError(String errorUri, String errorDesc) {
+				
+				Log.e("ERROR", errorUri + " : " + errorDesc);			
+			}
+		});
+		
+		
 		lvGame.setAdapter(this.adapter = new ListGameAdapter(getActivity(), games));	
 
 		lvGame.setOnItemClickListener(new OnItemClickListener() 

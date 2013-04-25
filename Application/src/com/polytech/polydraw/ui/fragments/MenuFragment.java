@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -66,6 +67,7 @@ public class MenuFragment extends BaseFragment implements CallHandler
 	
 	private void startConnection()
 	{
+		Log.d("Player Name : ", "Player : " + getGC().getPlayerName());
 		getCM().startConnection(getGC().getPlayerName(), this);
 	}
 	
@@ -87,6 +89,7 @@ public class MenuFragment extends BaseFragment implements CallHandler
 				{
 					String playerName = edt.getText().toString().trim();
 					getGC().setPlayerName(playerName);
+					
 					SharedPreferences.Editor settingEditor = settings.edit();
 					settingEditor.putBoolean("is_player_name_set", true);
 					settingEditor.putString("player_name", getGC().getPlayerName());
@@ -100,6 +103,8 @@ public class MenuFragment extends BaseFragment implements CallHandler
 		else
 		{
 			String playerName = settings.getString("player_name", "Anonymous");
+			if(playerName=="")
+				playerName = "Anonymous";
 			getGC().setPlayerName(playerName);
 			startConnection();
 		}
