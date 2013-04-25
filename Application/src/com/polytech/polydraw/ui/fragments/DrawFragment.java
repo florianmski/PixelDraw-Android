@@ -5,6 +5,7 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.events.GameEvent;
+import com.polytech.polydraw.listeners.DrawEventListener;
 import com.polytech.polydraw.models.Category;
 import com.polytech.polydraw.models.Word;
 import com.polytech.polydraw.models.Wrapper;
@@ -26,7 +29,7 @@ import com.polytech.polydraw.utils.ErrorHandler;
 
 import de.tavendo.autobahn.Wamp.CallHandler;
 
-public class DrawFragment extends BaseFragment
+public class DrawFragment extends BaseFragment implements DrawEventListener
 {
 	private final static int SEND_DRAWING_DELAY = 300;
 
@@ -217,4 +220,26 @@ public class DrawFragment extends BaseFragment
 		if(r != null)
 			h.removeCallbacks(r);
 	}
+	
+
+	public void onStart()
+	{
+		super.onStart();
+		getCM().addDrawEventListener(this);
+	}
+
+	public void onDestroy()
+	{
+		super.onDestroy();
+		getCM().removeDrawEventListener(this);
+	}
+
+	@Override
+	public void onDrawEvent(GameEvent e) 
+	{
+		
+		if(!isDrawer)
+			dv.update(e.event.picture);
+	}
+	
 }

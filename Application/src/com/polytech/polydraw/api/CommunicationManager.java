@@ -139,7 +139,7 @@ public class CommunicationManager{
 		core.picture = picture;
 		
 		GameEvent event = new GameEvent();
-		event.type = 0;
+		event.type = 3;
 		event.time_stamp = System.currentTimeMillis();
 		event.event = core;
 		mConnection.publish(room, event);

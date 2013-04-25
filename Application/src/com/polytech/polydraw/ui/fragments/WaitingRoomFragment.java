@@ -80,7 +80,6 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 		return v;
 	}	
 
-
 	public void onStart()
 	{
 		super.onStart();
