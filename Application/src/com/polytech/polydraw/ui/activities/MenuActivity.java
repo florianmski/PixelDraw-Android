@@ -51,7 +51,7 @@ public class MenuActivity extends BaseActivity
 
 	            @Override
 	            public void onClick(DialogInterface dialog, int which) {
-
+	            	
 	            	MenuActivity.super.onBackPressed();
 	            }
 
@@ -59,5 +59,11 @@ public class MenuActivity extends BaseActivity
 	        .setNegativeButton("NO", null)
 	        .show();	
 		
+	}
+	
+	@Override
+	public void onDestroy(){
+		CommunicationManager.getInstance().closeCommunication();
+		super.onDestroy();
 	}
 }
