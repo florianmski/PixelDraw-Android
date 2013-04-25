@@ -25,6 +25,7 @@ import com.polytech.polydraw.adapters.ListGameAdapter;
 import com.polytech.polydraw.models.Room;
 import com.polytech.polydraw.models.Wrapper;
 import com.polytech.polydraw.ui.activities.WaitingRoomActivity;
+import com.polytech.polydraw.utils.ErrorHandler;
 
 import de.tavendo.autobahn.Wamp.CallHandler;
 
@@ -50,7 +51,7 @@ public class GameJoinFragment extends BaseFragment
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-	
+
 		getCM().getRoomList(new CallHandler() 
 		{	
 			@Override
@@ -58,10 +59,13 @@ public class GameJoinFragment extends BaseFragment
 			{	
 				refreshRoomList();
 			}
-			
+
 			@Override
 
-			public void onError(String errorUri, String errorDesc) {}
+			public void onError(String errorUri, String errorDesc) 
+			{
+				ErrorHandler.display(getActivity(), errorUri, errorDesc);
+			}
 
 		});
 
@@ -79,7 +83,7 @@ public class GameJoinFragment extends BaseFragment
 						Wrapper wr = (Wrapper) result;
 						onRoomJoined(wr.room);
 					}
-					
+
 					@Override
 					public void onError(String errorUri, String errorDesc) {}
 				});
@@ -96,26 +100,27 @@ public class GameJoinFragment extends BaseFragment
 		});	
 	}
 
-	
+
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
 	{
 		MenuItem refreshItem = menu.add(Menu.NONE, R.id.menu_color, Menu.NONE, "color");
-		
+
 		refreshItem.setIcon(R.drawable.ic_navigation_refresh)
 		.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		
-		refreshItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			
+
+		refreshItem.setOnMenuItemClickListener(new OnMenuItemClickListener() 
+		{	
 			@Override
-			public boolean onMenuItemClick(MenuItem item) {
+			public boolean onMenuItemClick(MenuItem item) 
+			{
 				refreshRoomList();
 				return false;
 			}
 		});
-	
+
 	}
-	
-	
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
@@ -154,7 +159,10 @@ public class GameJoinFragment extends BaseFragment
 						}
 
 						@Override
-						public void onError(String errorUri, String errorDesc) {}
+						public void onError(String errorUri, String errorDesc) 
+						{
+							ErrorHandler.display(getActivity(), errorUri, errorDesc);
+						}
 					});
 				}         	
 			}});
@@ -166,7 +174,7 @@ public class GameJoinFragment extends BaseFragment
 
 		adb.show();	
 	}
-	
+
 	public void onRoomJoined(Room r)
 	{
 		getGC().setCurRoom(r);
@@ -175,9 +183,10 @@ public class GameJoinFragment extends BaseFragment
 		getCM().subscribeGame();
 		WaitingRoomActivity.launch(getActivity());
 	}
-	
-	public void refreshRoomList(){
-		
+
+	public void refreshRoomList()
+	{
+
 		getCM().getRoomList(new CallHandler() 
 		{	
 			@Override
@@ -187,11 +196,14 @@ public class GameJoinFragment extends BaseFragment
 				List<Room> list_room = wr.rooms;
 				lvGame.setAdapter(adapter = new ListGameAdapter(getActivity(), list_room));
 			}
-			
+
 			@Override
-		public void onError(String errorUri, String errorDesc) {}
+			public void onError(String errorUri, String errorDesc) 
+			{
+				ErrorHandler.display(getActivity(), errorUri, errorDesc);
+			}
 
 		});
-		
+
 	}
 }

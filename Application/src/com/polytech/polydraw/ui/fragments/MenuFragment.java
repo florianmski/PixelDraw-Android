@@ -17,6 +17,7 @@ import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.models.Wrapper;
 import com.polytech.polydraw.ui.activities.GameActivity;
 import com.polytech.polydraw.ui.activities.GameJoinActivity;
+import com.polytech.polydraw.utils.ErrorHandler;
 
 import de.tavendo.autobahn.Wamp.CallHandler;
 
@@ -167,7 +168,7 @@ public class MenuFragment extends BaseFragment implements CallHandler
 	@Override
 	public void onError(String errorUri, String errorDesc) 
 	{
-		// TODO
+		ErrorHandler.display(getActivity(), errorUri, errorDesc);
 	}
 	
 }
