@@ -17,6 +17,7 @@ import com.polytech.polydraw.events.GameEvent;
 import com.polytech.polydraw.listeners.RoomEventListener;
 import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.ui.activities.ScoreBoardActivity;
+import com.polytech.polydraw.utils.Constants;
 
 public class WaitingRoomFragment extends BaseFragment implements RoomEventListener
 {	
@@ -24,10 +25,20 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 	private ListPlayerAdapter adapter;
 	private Button btnLaunch;
 	
-	public static WaitingRoomFragment newInstance()
+	private String adminId;
+	
+	public static WaitingRoomFragment newInstance(String adminId)
 	{
 		WaitingRoomFragment f = new WaitingRoomFragment();
+		Bundle b = new Bundle();
+		b.putString(Constants.BUNDLE_ADMIN_ID, adminId);
+		f.setArguments(b);
 		return f;
+	}
+	
+	public static WaitingRoomFragment newInstance(Bundle b)
+	{
+		return newInstance(b.getString(Constants.BUNDLE_ADMIN_ID));
 	}
 
 	@Override
@@ -36,12 +47,17 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 		super.onCreate(savedInstanceState);
 		
 		setHasOptionsMenu(true);
+		
+		adminId = getArguments().getString(Constants.BUNDLE_ADMIN_ID);
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
+		
+		if(!adminId.equals(getGC().getPlayerID()))
+				btnLaunch.setVisibility(View.GONE);
 		
 		lvPlayer.setAdapter(adapter = new ListPlayerAdapter(getActivity(), new ArrayList<Player>(getGC().getPlayerList().values())));
 			
