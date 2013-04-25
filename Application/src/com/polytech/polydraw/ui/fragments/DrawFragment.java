@@ -93,16 +93,15 @@ public class DrawFragment extends BaseFragment
 				cdf.setOnColorListener(new OnColorListener() 
 				{	
 					@Override
-					public void onColorSelected(String colorString) 
+					public void onColorSelected(int color) 
 					{
-						dv.setColor(colorString);
-						cd.setColor(colorString);
+						dv.setColor(color);
+						cd.setColor(color);
 					}
 				});
 				cdf.show(getFragmentManager(), null);
 			}
 		});
-
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 

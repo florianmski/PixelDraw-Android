@@ -94,6 +94,14 @@ public class CommunicationManager{
 		mConnection.call("leave_room", Wrapper.class, leaveRoomHandler, key);
 	}
 	
+	/**
+	 * No parameters, no return values (callback not necessary?)
+	 * @param launchGameHandler
+	 */
+	public void launchGame(CallHandler launchGameHandler){
+		mConnection.call("launch_game", Wrapper.class, launchGameHandler);
+	}
+	
 	public void getCategories(CallHandler categoriesHandler){
 		mConnection.call("get_categories", Wrapper.class, categoriesHandler);
 	}

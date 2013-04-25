@@ -14,31 +14,31 @@ public class CircleColorView extends View
 	private Paint circlePaint;
 	private Paint circleOutlinePaint;
 
-	public CircleColorView(Context context, String colorString) 
+	public CircleColorView(Context context, Integer color8888) 
 	{
 		super(context);
-		init(colorString);
+		init(color8888);
 	}
 
 	public CircleColorView(Context context, AttributeSet attrs) 
 	{
 		super(context, attrs);
-		init("#51574a");
+		init(0xff51574a);
 	}
 
 	public CircleColorView(Context context, AttributeSet attrs, int defStyle) 
 	{
 		super(context, attrs, defStyle);
-		init("#51574a");
+		init(0xff51574a);
 	}
 	
-	public void init(String colorString)
+	public void init(Integer color8888)
 	{
 		circlePaint = new Paint();
 		circleOutlinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		circleOutlinePaint.setStyle(Style.STROKE);
-		circleOutlinePaint.setColor(Color.parseColor("#88000000"));
-		setColor(colorString);
+		circleOutlinePaint.setColor(0xff000000);
+		setColor(color8888);
 	}
 
 	@Override
@@ -52,9 +52,9 @@ public class CircleColorView extends View
 		canvas.drawCircle(cx, cy, cx/2, circleOutlinePaint);
 	}
 
-	public void setColor(String colorString)
+	public void setColor(Integer color8888)
 	{
-		this.color = Color.parseColor(colorString);
+		this.color = color8888;
 		circlePaint.setColor(color);
 		invalidate();
 	}

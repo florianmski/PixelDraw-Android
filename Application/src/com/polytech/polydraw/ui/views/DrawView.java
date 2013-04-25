@@ -1,10 +1,14 @@
 package com.polytech.polydraw.ui.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -12,16 +16,17 @@ public class DrawView extends View
 {
 	private final static int GRID_SIZE = 16;
 	
-	private String currentColor = "#51574a";
+	private int currentColor = 0xff51574a;
 
 	// matrix containing the case colors
-	private String[][] matrix;
+//	private String[][] matrix;
+	private List<Integer> picture;
 	// paint used to draw "pixels"
 	private Paint casePaint;
 	// paint used to draw the grid
 	private Paint gridPaint;
 	// define if the player is currently the drawer or not
-	private boolean drawer = false;
+	private boolean drawer = true;
 	
 	private OnNewDrawingDataListener listener;
 
@@ -46,20 +51,19 @@ public class DrawView extends View
 	private void init()
 	{
 		// let's start by filling the matrix with white
-		matrix = new String[GRID_SIZE][GRID_SIZE];
-		for(int i = 0; i < GRID_SIZE; i++)
-		{
-			for(int j = 0; j < GRID_SIZE; j++)
-				matrix[i][j] = "#FFFFFF";
+		picture = new ArrayList<Integer>(GRID_SIZE*GRID_SIZE);
+		for(int i=0; i<GRID_SIZE*GRID_SIZE;i++){
+			picture.add(0xffffffff); //Init with white color
 		}
 
 		casePaint = new Paint();
 
 		gridPaint = new Paint();
-		gridPaint.setColor(Color.parseColor("#88000000"));
+		gridPaint.setColor(0xff000000);
+		
 	}
 	
-	public void setColor(String colorString)
+	public void setColor(int colorString)
 	{
 		this.currentColor = colorString;
 		invalidate();
@@ -76,12 +80,13 @@ public class DrawView extends View
 		int caseSize = (int) ((float)sizeInpixels / GRID_SIZE);
 
 		// draw each case one by one using the right color
-		for(int i = 0; i < GRID_SIZE; i++)
-		{
-			for(int j = 0; j < GRID_SIZE; j++)
-			{
-				casePaint.setColor(Color.parseColor(matrix[i][j]));
-				canvas.drawRect(i*caseSize, j*caseSize, (i+1)*caseSize, (j+1)*caseSize, casePaint);
+		for(int i=0; i<GRID_SIZE*GRID_SIZE;i++){
+			int x = i/GRID_SIZE;
+			int y = i%GRID_SIZE;
+			casePaint.setColor(picture.get(i));
+			canvas.drawRect(x*caseSize, y*caseSize, (x+1)*caseSize, (y+i)*caseSize, casePaint);
+			if(casePaint.getColor() != 0xffffffff){
+				Log.e("lol", "lol");
 			}
 		}
 
@@ -93,6 +98,7 @@ public class DrawView extends View
 			canvas.drawLine(0, end, sizeInpixels, end, gridPaint);
 			// column
 			canvas.drawLine(end, 0, end, sizeInpixels, gridPaint);
+			
 		}
 	}
 
@@ -112,21 +118,24 @@ public class DrawView extends View
 		// we're out, we don't handle this, return
 		if((x <= GRID_SIZE-1 && y <= GRID_SIZE-1) && (x >= 0 && y >= 0))
 		{
-			String caseColor = matrix[x][y];
+//			String caseColor = matrix[x][y];
+			int pictureIndex = x*GRID_SIZE+y;
+			int caseColor = picture.get(pictureIndex);
 			// redraw only if player use another color on the case
-			if(caseColor.equals(currentColor))
+			if(caseColor == currentColor)
 				return true;
 			
 			// locate the square which correspond to the point the user has touched
 			// I do think we can think of a better algorithm but let's start with this one
-			matrix[x][y] = currentColor;
+//			matrix[x][y] = currentColor;
+			picture.set(pictureIndex, currentColor);
 
 			// redraw
 			invalidate();
 			
 			// send new data
 			if(listener != null && drawer)
-				listener.onNewDrawingData(matrix);
+				listener.onNewDrawingData(picture);
 		}
 
 		// we have consumed the event, return true
@@ -141,13 +150,13 @@ public class DrawView extends View
 		super.onMeasure(min, min);
 	}
 	
-	public void update(String[][] matrix)
+	public void update(List<Integer> picture)
 	{
 		// if player is the drawer, no need to update, return
 		if(drawer)
 			return;
 		
-		this.matrix = matrix;
+		this.picture = picture;
 		invalidate();
 	}
 	
@@ -156,9 +165,9 @@ public class DrawView extends View
 		this.drawer = drawer;
 	}
 	
-	public String[][] getDrawing()
+	public List<Integer> getDrawing()
 	{
-		return matrix;
+		return picture;
 	}
 	
 	public void setOnNewDrawingDataListener(OnNewDrawingDataListener listener)
@@ -168,6 +177,6 @@ public class DrawView extends View
 	
 	public interface OnNewDrawingDataListener
 	{
-		public void onNewDrawingData(String[][] matrix);
+		public void onNewDrawingData(List<Integer> picture);
 	}
 }

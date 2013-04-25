@@ -16,29 +16,29 @@ import com.polytech.polydraw.adapters.GridColorAdapter;
 
 public class ColorDialogFragment extends DialogFragment
 {
-	private final static String[] colors = new String[]{
-		"#51574a",
-		"#447c69",
-		"#74c493",
-		"#8e8c6d",
-		"#e4bf80",
-		"#e9d78e",
-		"#e2975d",
-		"#f19670",
-		"#e16552",
-		"#c94a53",
-		"#be5168",
-		"#a34974",
-		"#993767",
-		"#65387d",
-		"#4e2472",
-		"#9163b6",
-		"#e279a3",
-		"#e0598b",
-		"#7c9fb0",
-		"#5698c4",
-		"#9abf88",
-		"#ffffff"
+	private final static Integer[] colors = new Integer[]{
+		0xff51574a,
+		0xff447c69,
+		0xff74c493,
+		0xff8e8c6d,
+		0xffe4bf80,
+		0xffe9d78e,
+		0xffe2975d,
+		0xfff19670,
+		0xffe16552,
+		0xffc94a53,
+		0xffbe5168,
+		0xffa34974,
+		0xff993767,
+		0xff65387d,
+		0xff4e2472,
+		0xff9163b6,
+		0xffe279a3,
+		0xffe0598b,
+		0xff7c9fb0,
+		0xff5698c4,
+		0xff9abf88,
+		0xffffffff
 	};
 	
 	private GridView gl;
@@ -65,7 +65,7 @@ public class ColorDialogFragment extends DialogFragment
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) 
 			{
 				if(listener != null)
-					listener.onColorSelected((String) adapter.getItem(position));
+					listener.onColorSelected(adapter.getItem(position));
 				dismiss();
 			}
 		});
@@ -88,6 +88,6 @@ public class ColorDialogFragment extends DialogFragment
 	
 	public interface OnColorListener
 	{
-		public void onColorSelected(String colorString);
+		public void onColorSelected(int colorString);
 	}
 }

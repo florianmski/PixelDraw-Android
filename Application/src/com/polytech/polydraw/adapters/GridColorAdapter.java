@@ -14,10 +14,10 @@ import com.polytech.polydraw.ui.views.CircleColorView;
 
 public class GridColorAdapter extends BaseAdapter
 {
-	private List<String> colors = new ArrayList<String>();
+	private List<Integer> colors = new ArrayList<Integer>();
 	private Context context;
 	
-	public GridColorAdapter(Context context, List<String> colors)
+	public GridColorAdapter(Context context, List<Integer> colors)
 	{
 		this.context = context;
 		this.colors = colors;
@@ -30,7 +30,7 @@ public class GridColorAdapter extends BaseAdapter
 	}
 
 	@Override
-	public Object getItem(int position) 
+	public Integer getItem(int position) 
 	{
 		return colors.get(position);
 	}
@@ -57,8 +57,8 @@ public class GridColorAdapter extends BaseAdapter
         else
             holder = (ViewHolder) convertView.getTag();
         
-        String colorString = colors.get(position);
-        holder.ccv.setColor(colorString);
+        Integer color = colors.get(position);
+        holder.ccv.setColor(color);
         
 		return convertView;
 	}
