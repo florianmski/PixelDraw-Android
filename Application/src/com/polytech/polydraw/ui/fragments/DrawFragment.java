@@ -48,7 +48,8 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	private ProgressBar pbTime;
 
 	private Handler h = new Handler();
-	private Runnable r;
+	private Runnable rSendDrawing;
+	private Runnable rTime;
 
 	public static DrawFragment newInstance()
 	{
@@ -235,7 +236,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	{
 		startTurnAt = System.currentTimeMillis();
 
-		h.post(new Runnable() 
+		h.post(rTime = new Runnable() 
 		{	
 			@Override
 			public void run() 
@@ -254,7 +255,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 			}
 		});
 		
-		h.post(r = new Runnable() 
+		h.post(rSendDrawing = new Runnable() 
 		{	
 			@Override
 			public void run() 
@@ -267,8 +268,11 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 
 	private void stopDrawing()
 	{
-		if(r != null)
-			h.removeCallbacks(r);
+		if(rSendDrawing != null)
+			h.removeCallbacks(rSendDrawing);
+		
+		if(rTime != null)
+			h.removeCallbacks(rTime);
 	}
 
 
