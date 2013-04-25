@@ -47,6 +47,7 @@ public class GameContext {
 	}
 
 	public void setPlayerList(List<Player> playerList) {
+		mPlayerRegister.clear();
 		for(int i=0; i<playerList.size();i++){
 			this.mPlayerRegister.put(playerList.get(i).id, playerList.get(i));
 		}
