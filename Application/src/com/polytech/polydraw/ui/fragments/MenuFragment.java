@@ -1,12 +1,18 @@
 package com.polytech.polydraw.ui.fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +20,27 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.models.Wrapper;
 import com.polytech.polydraw.ui.activities.GameJoinActivity;
+import com.polytech.polydraw.ui.views.DrawView;
 import com.polytech.polydraw.utils.ErrorHandler;
+
 import de.tavendo.autobahn.Wamp.CallHandler;
 
 public class MenuFragment extends BaseFragment implements CallHandler
 {
 	private Button btnPlay;
 	private Button btnName;
+	private DrawView dv;
+
+	private Handler h = new Handler();
+	private Runnable r;
+	private Random random = new Random();
+	private List<Integer> integers = new ArrayList<Integer>();
+	
 	public static MenuFragment newInstance()
 	{
 		MenuFragment f = new MenuFragment();
@@ -38,11 +54,40 @@ public class MenuFragment extends BaseFragment implements CallHandler
 		
 		setHasOptionsMenu(true);
 	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		
+		h.post(r = new Runnable() 
+		{	
+			@Override
+			public void run() 
+			{
+				integers.set(new Random().nextInt(integers.size()), Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+				dv.setDrawer(false);
+				dv.update(integers);
+				h.postDelayed(this, 50);
+			}
+		});
+	}
+	
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		
+		h.removeCallbacks(r);
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
+		
+		for(int i = 0; i < 256; i++)
+			integers.add(0);
 		
 		btnPlay.setOnClickListener(new OnClickListener() 
 		{	
@@ -164,6 +209,7 @@ public class MenuFragment extends BaseFragment implements CallHandler
 		
 		btnPlay = (Button)v.findViewById(R.id.buttonPlay);
 		btnName = (Button)v.findViewById(R.id.btnName);
+		dv = (DrawView)v.findViewById(R.id.drawView);
 		return v;
 	}
 

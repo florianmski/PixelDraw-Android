@@ -3,6 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <com.polytech.polydraw.ui.views.DrawView
+        android:id="@+id/drawView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
     <Button
         android:id="@+id/buttonPlay"
         android:layout_width="wrap_content"
@@ -10,9 +16,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textSize="100dp"
         android:minHeight="148dp"
-        android:text="Play!" />
+        android:text="Play!"
+        android:textSize="100dp" />
 
     <Button
         android:id="@+id/btnName"
