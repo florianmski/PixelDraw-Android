@@ -73,7 +73,7 @@ public class DrawFragment extends BaseFragment
 				}
 			}
 		});
-		
+
 		startTurn();
 	}
 
@@ -129,7 +129,7 @@ public class DrawFragment extends BaseFragment
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void startTurn()
 	{
 		designateDrawer();
@@ -138,7 +138,7 @@ public class DrawFragment extends BaseFragment
 			displayCategories();
 		else
 		{
-			
+
 		}
 	}
 
@@ -204,8 +204,7 @@ public class DrawFragment extends BaseFragment
 			@Override
 			public void run() 
 			{
-				// TODO
-				// getCM().sendDrawMessage(dv.getDrawing());
+				getCM().sendDrawMessage(dv.getDrawing());
 				h.postDelayed(this, SEND_DRAWING_DELAY);
 			}
 		});

@@ -131,7 +131,7 @@ public class CommunicationManager{
 		mConnection.publish(room, eve);
 	}
 
-	public void sendDrawMessage(ArrayList<Integer> picture){
+	public void sendDrawMessage(List<Integer> picture){
 		String room = mGameContext.getCurRoom().id;
 		
 		GameEventWrapper core = new GameEventWrapper();

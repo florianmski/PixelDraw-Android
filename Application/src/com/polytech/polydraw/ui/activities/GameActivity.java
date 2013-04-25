@@ -61,19 +61,10 @@ public class GameActivity extends ChatEnabledActivity
 			@Override
 			public void onClick(DialogInterface dialog, int which) 
 			{
-				CommunicationManager.getInstance().leaveRoom(new CallHandler() 
-				{
-
-					@Override
-					public void onResult(Object result) 
-					{
-						CommunicationManager.getInstance().closeCommunication();	
-						MenuActivity.launchClearTop(GameActivity.this);
-					}
-
-					@Override
-					public void onError(String errorUri, String errorDesc) {}
-				});
+				
+				CommunicationManager.getInstance().closeCommunication();	
+				MenuActivity.launchClearTop(GameActivity.this);
+				
 			}
 
 		})

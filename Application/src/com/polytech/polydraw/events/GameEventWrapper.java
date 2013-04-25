@@ -1,6 +1,8 @@
 package com.polytech.polydraw.events;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.models.Room;
 
@@ -9,5 +11,5 @@ public class GameEventWrapper {
 	public String msg;
 	public Room room;
 	public ArrayList<Player> player_list;
-	public ArrayList<Integer> picture;
+	public List<Integer> picture;
 }

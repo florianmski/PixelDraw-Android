@@ -7,10 +7,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 public class DrawView extends View
 {
@@ -97,7 +99,41 @@ public class DrawView extends View
 			
 		}
 	}
-
+	
+	private int prevX;
+	private int prevY;
+	
+//	public ArrayList<Point> interpol(int x1, int y1, int x2, int y2){
+//		
+//		float coefDir = (float) (y2-y1) / (float) (x2-x1);
+//		
+//		ArrayList<Point> result = new ArrayList<Point>();
+//		result.add(new Point(x1, y1));
+//		int curX = x1;
+//		int curY = y1;
+//		
+//		ArrayList<Integer> xList = new ArrayList<Integer>();
+//		for(int i=0; i<Math.abs(x2-x1);i++){
+//			xList.add(x1);
+//		}
+//		
+//		while(curX != x2 && curY != y2){
+//			
+//			
+//			
+////			curY = (curX - x1) * (y2-y1)/(x2-x1);
+////			
+////			if(curY != result.get(result.size()-1).y){
+////				result.add(new Point(curX, curY));
+////				Log.e("DrawView", "add new points: "+result.get(result.size()-1).toString());
+////				curX++;
+////			}
+//		}
+//		
+//		return result;
+//		
+//	}
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) 
 	{
@@ -108,29 +144,56 @@ public class DrawView extends View
 		int sizeInpixels = getMeasuredWidth();
 		int caseSize = (int) ((float)sizeInpixels / GRID_SIZE);
 
-		int x = (int) (event.getX()/caseSize);
-		int y = (int) (event.getY()/caseSize);
+		int curX = (int) (event.getX()/caseSize);
+		int curY = (int) (event.getY()/caseSize);
+
+		List<Integer> listX = new ArrayList<Integer>();
+		List<Integer> listY = new ArrayList<Integer>();
+		
+		
+		
+		if(event.getAction() == MotionEvent.ACTION_MOVE && (prevX != curX && prevY != curY)){
+//			ArrayList<Point> interpolationPoints = new ArrayList<Point>();
+//			interpolationPoints = interpol(prevX, prevY, curX, curY);
+//			for(int i=0; i< interpolationPoints.size(); i++){
+//				listX.add(interpolationPoints.get(i).x);
+//				listY.add(interpolationPoints.get(i).y);
+//			}
+		}
+		
+		listX.add(curX);
+		listY.add(curY);
+		
+		prevX = curX;
+		prevY = curY;
 		
 		// we're out, we don't handle this, return
-		if((x <= GRID_SIZE-1 && y <= GRID_SIZE-1) && (x >= 0 && y >= 0))
-		{
-			int pictureIndex = x*GRID_SIZE+y;
-			int caseColor = picture.get(pictureIndex);
-			// redraw only if player use another color on the case
-			if(caseColor == currentColor)
-				return true;
+		for(int i=0;i<listX.size();i++){
+			int x = listX.get(i);
+			int y = listY.get(i);
 			
-			// locate the square which correspond to the point the user has touched
-			// I do think we can think of a better algorithm but let's start with this one
-			picture.set(pictureIndex, currentColor);
+			if((x <= GRID_SIZE-1 && y <= GRID_SIZE-1) && (x >= 0 && y >= 0))
+			{
+				int pictureIndex = x*GRID_SIZE+y;
+				int caseColor = picture.get(pictureIndex);
+				// redraw only if player use another color on the case
+				if(caseColor == currentColor)
+					return true;
+				
+				// locate the square which correspond to the point the user has touched
+				// I do think we can think of a better algorithm but let's start with this one
+				picture.set(pictureIndex, currentColor);
 
-			// redraw
-			invalidate();
-			
-			// send new data
-			if(listener != null && drawer)
-				listener.onNewDrawingData(picture);
+				// redraw
+				invalidate();
+				
+				// send new data
+				if(listener != null && drawer)
+					listener.onNewDrawingData(picture);
+			}
 		}
+		
+		
 
 		// we have consumed the event, return true
 		return true;
