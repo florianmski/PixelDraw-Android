@@ -5,6 +5,7 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -157,10 +158,10 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 			@Override
 			public void run() 
 			{
-				long timeRemaining = getGC().getCurRoom().ended_at - System.currentTimeMillis();
+				long timeRemaining = (getGC().getCurRoom().ended_at * 1000) - System.currentTimeMillis();
 				if(getGC().getCurRoom().ended_at > 0)
 				{
-					int progress = (int) ((timeRemaining * 100) / getGC().getCurRoom().ended_at);
+					int progress = (int) ((timeRemaining * 100) / (getGC().getCurRoom().ended_at * 1000 - startTurnAt));
 					pbTime.setProgress(progress);
 				}
 				h.postDelayed(this, 1000);
