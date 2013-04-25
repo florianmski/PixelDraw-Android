@@ -1,12 +1,10 @@
 package com.polytech.polydraw.ui.fragments;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,7 +18,6 @@ import android.widget.ListView;
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListGameAdapter;
 import com.polytech.polydraw.models.Room;
-import com.polytech.polydraw.models.RoomList;
 import com.polytech.polydraw.models.Wrapper;
 import com.polytech.polydraw.ui.activities.WaitingRoomActivity;
 
@@ -51,38 +48,26 @@ public class GameJoinFragment extends BaseFragment
 		super.onActivityCreated(savedInstanceState);
 
 
-		final List<String> games = new ArrayList<String>();
-		for(int i = 0; i < 7; i++)
-			games.add("Game : " + i);
-		
-		
-		getCM().getRoomList(new CallHandler() {
-			
-			@Override
-			public void onResult(Object result) {
-				
-				Wrapper wr = (Wrapper) result;
-				ArrayList<Room> r = wr.rooms;
-						
-			}
-			
-			@Override
-			public void onError(String errorUri, String errorDesc) {
-				
-				Log.e("ERROR", errorUri + " : " + errorDesc);			
-			}
-		});
-		
-		
-		lvGame.setAdapter(this.adapter = new ListGameAdapter(getActivity(), games));	
+		lvGame.setAdapter(this.adapter = new ListGameAdapter(getActivity(), new ArrayList<Room>()));	
 
 		lvGame.setOnItemClickListener(new OnItemClickListener() 
 		{
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) 
 			{
-				// TODO take care of the room we choose
-				WaitingRoomActivity.launch(getActivity());
+				String roomId = ((Room)adapter.getItem(position)).id;
+				getCM().joinRoom(roomId, new CallHandler() 
+				{	
+					@Override
+					public void onResult(Object result) 
+					{
+						Wrapper wr = (Wrapper) result;
+						onRoomJoined(wr.room);
+					}
+					
+					@Override
+					public void onError(String errorUri, String errorDesc) {}
+				});
 			}
 		});
 
@@ -130,19 +115,11 @@ public class GameJoinFragment extends BaseFragment
 						public void onResult(Object result) 
 						{
 							Wrapper wr = (Wrapper) result;
-
-							Room r = wr.room;
-
-							getGC().setRoomID((String)r.id);
-							getCM().subscribeGame();
-							WaitingRoomActivity.launch(getActivity());
+							onRoomJoined(wr.room);
 						}
 
 						@Override
-						public void onError(String errorUri, String errorDesc) 
-						{
-
-						}
+						public void onError(String errorUri, String errorDesc) {}
 					});
 				}
 
@@ -156,5 +133,12 @@ public class GameJoinFragment extends BaseFragment
 
 		adb.show();	
 	}
-
+	
+	public void onRoomJoined(Room r)
+	{
+		getGC().setRoomID(r.id);
+		getCM().subscribeGame();
+		WaitingRoomActivity.launch(getActivity());
+	}
+	
 }

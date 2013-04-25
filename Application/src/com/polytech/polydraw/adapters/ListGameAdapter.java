@@ -3,8 +3,6 @@ package com.polytech.polydraw.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.polytech.polydraw.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,21 +10,23 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class ListGameAdapter extends BaseAdapter{
+import com.polytech.polydraw.R;
+import com.polytech.polydraw.models.Room;
 
-	
-	private List<String> games = new ArrayList<String>();
+public class ListGameAdapter extends BaseAdapter
+{	
+	private List<Room> games = new ArrayList<Room>();
 	private Context context;
 	
-	public ListGameAdapter(Context context, List<String> games)
+	public ListGameAdapter(Context context, List<Room> games)
 	{
 		this.context = context;
 		this.games = games;
 	}
 	
-	public void addMessage(String message)
+	public void addRoom(Room r)
 	{
-		games.add(message);
+		games.add(r);
 		this.notifyDataSetChanged();
 	}
 
@@ -65,8 +65,8 @@ public class ListGameAdapter extends BaseAdapter{
         else
             holder = (ViewHolder) convertView.getTag();
         
-        String message = games.get(position);
-        holder.tvGame.setText(message);
+        Room r = games.get(position);
+        holder.tvGame.setText(r.name);
         
 		return convertView;
 	}
