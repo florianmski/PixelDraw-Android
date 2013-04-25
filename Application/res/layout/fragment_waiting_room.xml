@@ -4,21 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/lvPlayer"
-        android:layout_width="wrap_content"
-        android:layout_height="182dp"
-        android:layout_weight="0.48" >
-
-    </ListView>
-
     <Button
         android:id="@+id/btnLaunch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="23dp"
+        android:layout_marginRight="19dp"
         android:text="Launch" />
+
+    <ListView
+        android:id="@+id/lvPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="182dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvRoomName"
+        android:layout_marginTop="52dp"
+        android:layout_weight="0.48" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/tvRoomName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="16dp"
+        android:text="Room Name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

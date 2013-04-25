@@ -1,8 +1,11 @@
 package com.polytech.polydraw.ui.fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,14 +70,35 @@ public class MenuFragment extends BaseFragment implements CallHandler
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				showDialogSetPlayerName();
 			}
 		});
 			
+		checkConnection();
 		start();
 	}
-	
+	/**
+	 * Leave application if no internet
+	 */
+	private void checkConnection(){
+	    ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return;
+	    }
+	    else{
+	    	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	    	builder.setMessage("No Internet! Game Over");
+	    	builder.setNeutralButton("OK...", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					getActivity().finish();
+				}
+			});
+	    	
+	    	builder.create().show();
+	    }
+	}
 	
 	private void showDialogSetPlayerName(){
 		

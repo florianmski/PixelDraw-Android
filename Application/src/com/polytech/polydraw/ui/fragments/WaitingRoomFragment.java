@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.adapters.ListPlayerAdapter;
@@ -21,6 +22,7 @@ import com.polytech.polydraw.utils.Constants;
 
 public class WaitingRoomFragment extends BaseFragment implements RoomEventListener
 {	
+	private TextView tvRoomName;
 	private ListView lvPlayer;
 	private ListPlayerAdapter adapter;
 	private Button btnLaunch;
@@ -77,6 +79,8 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 		View v = inflater.inflate(R.layout.fragment_waiting_room, null);
 		lvPlayer = (ListView)v.findViewById(R.id.lvPlayer);
 		btnLaunch = (Button)v.findViewById(R.id.btnLaunch);
+		tvRoomName = (TextView)v.findViewById(R.id.tvRoomName);
+		tvRoomName.setText(getGC().getCurRoom().name);
 		return v;
 	}	
 
