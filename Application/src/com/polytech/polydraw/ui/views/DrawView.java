@@ -103,36 +103,29 @@ public class DrawView extends View
 	private int prevX;
 	private int prevY;
 	
-//	public ArrayList<Point> interpol(int x1, int y1, int x2, int y2){
-//		
-//		float coefDir = (float) (y2-y1) / (float) (x2-x1);
-//		
-//		ArrayList<Point> result = new ArrayList<Point>();
-//		result.add(new Point(x1, y1));
-//		int curX = x1;
-//		int curY = y1;
-//		
-//		ArrayList<Integer> xList = new ArrayList<Integer>();
-//		for(int i=0; i<Math.abs(x2-x1);i++){
-//			xList.add(x1);
-//		}
-//		
-//		while(curX != x2 && curY != y2){
-//			
-//			
-//			
-////			curY = (curX - x1) * (y2-y1)/(x2-x1);
-////			
-////			if(curY != result.get(result.size()-1).y){
-////				result.add(new Point(curX, curY));
-////				Log.e("DrawView", "add new points: "+result.get(result.size()-1).toString());
-////				curX++;
-////			}
-//		}
-//		
-//		return result;
-//		
-//	}
+	public ArrayList<Point> interpol(int x1, int y1, int x2, int y2){
+		
+		float coefDir = (float) (y2-y1) / (float) (x2-x1);
+		
+		ArrayList<Point> result = new ArrayList<Point>();
+		result.add(new Point(x1, y1));
+		int curX = x1;
+		int curY = y1;
+		
+		do{
+			if(curX>x2)
+				curX--;
+			else
+				curX++;
+			curY = ((y2-y1)/(x2-x1))*(curX-x1)+y1;
+			
+			result.add(new Point(curX, curY));
+			
+		}while(curX != x2);
+		
+		return result;
+		
+	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) 
@@ -151,16 +144,16 @@ public class DrawView extends View
 		List<Integer> listY = new ArrayList<Integer>();
 		
 		
-		
+		//Find intermediate points if action move
 		if(event.getAction() == MotionEvent.ACTION_MOVE && (prevX != curX && prevY != curY)){
-//			ArrayList<Point> interpolationPoints = new ArrayList<Point>();
-//			interpolationPoints = interpol(prevX, prevY, curX, curY);
-//			for(int i=0; i< interpolationPoints.size(); i++){
-//				listX.add(interpolationPoints.get(i).x);
-//				listY.add(interpolationPoints.get(i).y);
-//			}
+			ArrayList<Point> interpolationPoints = new ArrayList<Point>();
+			interpolationPoints = interpol(prevX, prevY, curX, curY);
+			for(int i=0; i< interpolationPoints.size(); i++){
+				listX.add(interpolationPoints.get(i).x);
+				listY.add(interpolationPoints.get(i).y);
+			}
 		}
-		
+		//Add current point
 		listX.add(curX);
 		listY.add(curY);
 		
@@ -168,29 +161,27 @@ public class DrawView extends View
 		prevY = curY;
 		
 		// we're out, we don't handle this, return
+		Log.e("DrawView", "Number of Points: "+String.valueOf(listX.size()));
 		for(int i=0;i<listX.size();i++){
 			int x = listX.get(i);
 			int y = listY.get(i);
+			Log.e("DrawView", "X: "+String.valueOf(x)+" Y: "+String.valueOf(y));
 			
 			if((x <= GRID_SIZE-1 && y <= GRID_SIZE-1) && (x >= 0 && y >= 0))
 			{
 				int pictureIndex = x*GRID_SIZE+y;
 				int caseColor = picture.get(pictureIndex);
-				// redraw only if player use another color on the case
-				if(caseColor == currentColor)
-					return true;
 				
 				// locate the square which correspond to the point the user has touched
 				// I do think we can think of a better algorithm but let's start with this one
 				picture.set(pictureIndex, currentColor);
-
-				// redraw
-				invalidate();
-				
-				// send new data
-				if(listener != null && drawer)
-					listener.onNewDrawingData(picture);
 			}
+			// redraw
+			invalidate();
+			
+			// send new data
+			if(listener != null && drawer)
+				listener.onNewDrawingData(picture);
 		}
 		
 		
