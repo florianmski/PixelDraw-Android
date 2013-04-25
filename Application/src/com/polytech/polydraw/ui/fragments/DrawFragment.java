@@ -20,6 +20,7 @@ import com.polytech.polydraw.R;
 import com.polytech.polydraw.events.GameEvent;
 import com.polytech.polydraw.listeners.DrawEventListener;
 import com.polytech.polydraw.listeners.RoomEventListener;
+import com.polytech.polydraw.listeners.ServerEventListener;
 import com.polytech.polydraw.models.Category;
 import com.polytech.polydraw.models.Word;
 import com.polytech.polydraw.models.Wrapper;
@@ -30,7 +31,7 @@ import com.polytech.polydraw.utils.ErrorHandler;
 
 import de.tavendo.autobahn.Wamp.CallHandler;
 
-public class DrawFragment extends BaseFragment implements DrawEventListener, RoomEventListener
+public class DrawFragment extends BaseFragment implements DrawEventListener, RoomEventListener, ServerEventListener
 {
 	private final static int SEND_DRAWING_DELAY = 300;
 	private final static int DRAWING_DELAY = 20*1000;
@@ -267,6 +268,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		super.onStart();
 		getCM().addDrawEventListener(this);
 		getCM().addRoomEventListener(this);
+		getCM().addServerEventListener(this);
 	}
 
 	public void onDestroy()
@@ -274,6 +276,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		super.onDestroy();
 		getCM().removeDrawEventListener(this);
 		getCM().removeRoomEventListener(this);
+		getCM().removeServerEventListener(this);
 	}
 
 	@Override
@@ -291,6 +294,13 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	@Override
 	public void onRoomEvent(GameEvent e) 
 	{
+		if(!isDrawer)
+		{
+			String category = e.event.room.category_name;
+			if(category != null)
+				getActivity().getActionBar().setTitle("Category : " + category);
+		}
+		
 		String eventDrawerId = e.event.room.drawer_id;
 		// start game
 		if(drawerId == null)
@@ -308,6 +318,17 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 		}
 		
 		getGC().setCurRoom(e.event.room);
+	}
+
+	@Override
+	public void onServerEvent(GameEvent e) 
+	{
+		String msg = e.event.msg;
+		if(msg != null)
+		{
+			if(msg.equals("Game ends"))
+				startTurn();
+		}
 	}
 
 }
