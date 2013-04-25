@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.polytech.polydraw.R;
+import com.polytech.polydraw.api.CommunicationManager;
 import com.polytech.polydraw.events.GameEvent;
 import com.polytech.polydraw.listeners.DrawEventListener;
 import com.polytech.polydraw.listeners.RoomEventListener;
@@ -267,6 +268,7 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	public void onStart()
 	{
 		super.onStart();
+		
 		getCM().addDrawEventListener(this);
 		getCM().addRoomEventListener(this);
 	}
@@ -274,6 +276,8 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 	public void onDestroy()
 	{
 		super.onDestroy();
+		stopDrawing();
+		getCM().closeCommunication();
 		getCM().removeDrawEventListener(this);
 		getCM().removeRoomEventListener(this);
 	}

@@ -55,20 +55,17 @@ public class GameActivity extends ChatEnabledActivity
 		.setIcon(android.R.drawable.ic_dialog_alert)
 		.setTitle("Quit")
 		.setMessage("Do you want to return to the menu ?")
-		.setPositiveButton("YES", new DialogInterface.OnClickListener() 
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() 
 		{
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) 
-			{
-				
-				CommunicationManager.getInstance().closeCommunication();	
+			{	
 				MenuActivity.launchClearTop(GameActivity.this);
-				
 			}
 
 		})
-		.setNegativeButton("NO", null)
+		.setNegativeButton("No", null)
 		.show();	
 
 	}
