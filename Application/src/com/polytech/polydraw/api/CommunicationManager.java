@@ -19,7 +19,7 @@ import de.tavendo.autobahn.WampConnectionHandler;
 
 public class CommunicationManager{
 	private final String TAG = "CommunicationManager";
-	private final WampConnection mConnection;
+	private WampConnection mConnection;
 	private final String mWSURI = "ws://88.191.157.29:8080";
 	private GameContext mGameContext = GameContext.getInstance();
 	
@@ -60,6 +60,11 @@ public class CommunicationManager{
 		       mCloseConnectionHandler.onConnectionClose(code, reason);
 		    }
 		});
+	}
+	
+	public void closeCommunication(){
+		mConnection.disconnect();
+		mConnection = new WampConnection();
 	}
 	
 	public void createRoom(final String room_name, CallHandler createRoomHandler){
