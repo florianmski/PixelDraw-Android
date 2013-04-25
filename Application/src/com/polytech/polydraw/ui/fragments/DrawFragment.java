@@ -34,6 +34,7 @@ import de.tavendo.autobahn.Wamp.CallHandler;
 public class DrawFragment extends BaseFragment implements DrawEventListener, RoomEventListener
 {
 	private final static int SEND_DRAWING_DELAY = 300;
+	private final static int DRAWING_DELAY = 20*1000;
 
 	private boolean isDrawer = false;
 	private long startTurnAt;
@@ -155,19 +156,23 @@ public class DrawFragment extends BaseFragment implements DrawEventListener, Roo
 			@Override
 			public void run() 
 			{
-				long timeRemaining = (getGC().getCurRoom().ended_at * 1000) - System.currentTimeMillis();
-				if(getGC().getCurRoom().ended_at > 0)
-				{
-					int progress = (int) ((timeRemaining * 100) / (getGC().getCurRoom().ended_at * 1000 - startTurnAt));
-					pbTime.setProgress(progress);
-				}
+//				long timeRemaining = (getGC().getCurRoom().ended_at * 1000) - System.currentTimeMillis();
+//				if(getGC().getCurRoom().ended_at > 0)
+//				{
+//					int progress = (int) ((timeRemaining * 100) / (getGC().getCurRoom().ended_at * 1000 - startTurnAt));
+//					pbTime.setProgress(progress);
+//				}
+				long timeRemaining = startTurnAt - System.currentTimeMillis() + DRAWING_DELAY;
+				int progress = (int) ((timeRemaining * 100) / (DRAWING_DELAY));
+				pbTime.setProgress(progress);
+				
 				h.postDelayed(this, 1000);
 			}
 		});
 	}
 
 	private void startTurn()
-	{
+	{		
 		stopDrawing();
 
 		startTurnAt = System.currentTimeMillis();
