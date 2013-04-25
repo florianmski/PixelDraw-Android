@@ -6,6 +6,7 @@ public class Room {
 	public int count_player;
 	public int max_player;
 	public String admin_id;
+	public int state;
 	
 	public String method;
 }
