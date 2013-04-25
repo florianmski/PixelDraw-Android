@@ -20,6 +20,10 @@ public class DrawView extends View
 	private Paint casePaint;
 	// paint used to draw the grid
 	private Paint gridPaint;
+	// define if the player is currently the drawer or not
+	private boolean drawer = false;
+	
+	private OnNewDrawingDataListener listener;
 
 	public DrawView(Context context) 
 	{
@@ -95,6 +99,10 @@ public class DrawView extends View
 	@Override
 	public boolean onTouchEvent(MotionEvent event) 
 	{
+		// if player isn't currently the drawer, do nothing when player touch the view
+		if(!drawer)
+			return false;
+		
 		int sizeInpixels = getMeasuredWidth();
 		int caseSize = (int) ((float)sizeInpixels / GRID_SIZE);
 
@@ -115,6 +123,10 @@ public class DrawView extends View
 
 			// redraw
 			invalidate();
+			
+			// send new data
+			if(listener != null && drawer)
+				listener.onNewDrawingData(matrix);
 		}
 
 		// we have consumed the event, return true
@@ -127,5 +139,30 @@ public class DrawView extends View
 		// we want the surface to be a square which not goes beyond the screen
 		int min = Math.min(widthMeasureSpec, heightMeasureSpec);
 		super.onMeasure(min, min);
+	}
+	
+	public void update(String[][] matrix)
+	{
+		// if player is the drawer, no need to update, return
+		if(drawer)
+			return;
+		
+		this.matrix = matrix;
+		invalidate();
+	}
+	
+	public void setDrawer(boolean drawer)
+	{
+		this.drawer = drawer;
+	}
+	
+	public void setOnNewDrawingDataListener(OnNewDrawingDataListener listener)
+	{
+		this.listener = listener;
+	}
+	
+	public interface OnNewDrawingDataListener
+	{
+		public void onNewDrawingData(String[][] matrix);
 	}
 }
