@@ -138,8 +138,10 @@ public class DrawFragment extends BaseFragment
 			displayCategories();
 		else
 		{
-
+			
 		}
+		
+		dv.setDrawer(isDrawer);
 	}
 
 	private void displayCategories()

@@ -24,9 +24,9 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 	private ListView lvPlayer;
 	private ListPlayerAdapter adapter;
 	private Button btnLaunch;
-	
+
 	private String adminId;
-	
+
 	public static WaitingRoomFragment newInstance(String adminId)
 	{
 		WaitingRoomFragment f = new WaitingRoomFragment();
@@ -35,7 +35,7 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 		f.setArguments(b);
 		return f;
 	}
-	
+
 	public static WaitingRoomFragment newInstance(Bundle b)
 	{
 		return newInstance(b.getString(Constants.BUNDLE_ADMIN_ID));
@@ -45,28 +45,28 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		
+
 		setHasOptionsMenu(true);
-		
+
 		adminId = getArguments().getString(Constants.BUNDLE_ADMIN_ID);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-		
+
 		if(!adminId.equals(getGC().getPlayerID()))
-				btnLaunch.setVisibility(View.GONE);
-		
+			btnLaunch.setVisibility(View.GONE);
+
 		lvPlayer.setAdapter(adapter = new ListPlayerAdapter(getActivity(), getGC().getPlayerList()));
-			
+
 		btnLaunch.setOnClickListener(new OnClickListener() 
 		{	
 			@Override
 			public void onClick(View v) 
 			{	
-				GameActivity.launch(getActivity());
+				launchGame();
 			}
 		});
 	}
@@ -80,17 +80,23 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 		return v;
 	}	
 
-	
+
 	public void onStart()
 	{
 		super.onStart();
 		getCM().addRoomEventListener(this);
 	}
-	
+
 	public void onDestroy()
 	{
 		super.onDestroy();
 		getCM().removeRoomEventListener(this);
+	}
+
+	private void launchGame()
+	{
+		getCM().removeRoomEventListener(this);
+		GameActivity.launch(getActivity());
 	}
 
 	@Override
@@ -98,8 +104,7 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 	{
 		if(e.event.room.state == Room.STATE_DRAWER_CHOOSING)
 		{
-			GameActivity.launch(getActivity());
-			getActivity().finish();
+			launchGame();
 		}
 		else
 		{
@@ -108,5 +113,5 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 			adapter.update(players);
 		}
 	}
-	
+
 }

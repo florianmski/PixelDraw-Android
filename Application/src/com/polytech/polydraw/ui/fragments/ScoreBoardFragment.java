@@ -1,6 +1,9 @@
 package com.polytech.polydraw.ui.fragments;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,22 +19,20 @@ public class ScoreBoardFragment extends DialogFragment
 {	
 	private ListView lvScoreBoard;
 	private ListScoreAdapter adapter;
-	
+
 	public static ScoreBoardFragment newInstance()
 	{
 		ScoreBoardFragment f = new ScoreBoardFragment();
 		return f;
 	}
-	
+
 	public void onActivityCreated(Bundle savedInstanceState) 
 	{
 		super.onActivityCreated(savedInstanceState);
-		
-		getDialog().setTitle("Scores");
-				
+
 		lvScoreBoard.setAdapter(adapter = new ListScoreAdapter(getActivity(), GameContext.getInstance().getPlayerList()));
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{
@@ -39,5 +40,17 @@ public class ScoreBoardFragment extends DialogFragment
 		lvScoreBoard = (ListView)v.findViewById(R.id.lvScoreBoard);
 		return v;
 	}
-	
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) 
+	{   
+		return new AlertDialog.Builder(getActivity())                
+		.setTitle("Scores")
+		.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() 
+		{
+			public void onClick(DialogInterface dialog, int whichButton) {}
+			
+		}).create();
+	}
+
 }

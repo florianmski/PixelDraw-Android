@@ -202,11 +202,11 @@ public class CommunicationManager{
 	}
 	
 	public void removeRoomEventListener(RoomEventListener l){
-		mPlayerEventListeners.remove(l);
+		mRoomEventListeners.remove(l);
 	}
 	
 	public void removeAllRoomEventListener(RoomEventListener l){
-		mPlayerEventListeners.clear();
+		mRoomEventListeners.clear();
 	}
 	
 	public void addDrawEventListener(DrawEventListener l){
@@ -214,11 +214,11 @@ public class CommunicationManager{
 	}
 	
 	public void removeDrawEventListener(DrawEventListener l){
-		mPlayerEventListeners.remove(l);
+		mDrawEventListeners.remove(l);
 	}
 	
 	public void removeAllDrawEventListener(DrawEventListener l){
-		mPlayerEventListeners.clear();
+		mDrawEventListeners.clear();
 	}
 	
 	EventHandler mGameEventHandler = new EventHandler(){
