@@ -52,6 +52,10 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 
 		adminId = getArguments().getString(Constants.BUNDLE_ADMIN_ID);
 	}
+	
+	private void setAdminUI(){
+		btnLaunch.setVisibility(View.VISIBLE);
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) 
@@ -105,15 +109,25 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 	@Override
 	public void onRoomEvent(GameEvent e) 
 	{
-		if(e.event.room.state == Room.STATE_DRAWER_CHOOSING)
-		{
+		switch(e.event.room.state){
+		case Room.STATE_DRAWER_CHOOSING:
 			launchGame();
-		}
-		else
-		{
+			break;
+		case Room.STATE_WAITING:
+			//TODO check host change
+			if(!e.event.room.drawer_id.equals(getGC().getCurRoom().drawer_id)){
+				if(e.event.room.drawer_id.equals(getGC().getPlayerID())){
+					setAdminUI();
+				}
+			}
+			break;
+		case Room.STATE_IN_GAME:
+
+		default:
 			List<Player> players = e.event.room.players;
 			getGC().setPlayerList(players);
 			adapter.update(players);
+			break;
 		}
 	}
 
