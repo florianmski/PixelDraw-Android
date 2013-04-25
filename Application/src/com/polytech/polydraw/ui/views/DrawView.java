@@ -2,17 +2,14 @@ package com.polytech.polydraw.ui.views;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 
 public class DrawView extends View
 {
@@ -103,9 +100,7 @@ public class DrawView extends View
 	private int prevX;
 	private int prevY;
 	
-	public ArrayList<Point> interpol(int x1, int y1, int x2, int y2){
-		
-		float coefDir = (float) (y2-y1) / (float) (x2-x1);
+	public ArrayList<Point> interpolation(int x1, int y1, int x2, int y2){
 		
 		ArrayList<Point> result = new ArrayList<Point>();
 		result.add(new Point(x1, y1));
@@ -124,7 +119,6 @@ public class DrawView extends View
 		}while(curX != x2);
 		
 		return result;
-		
 	}
 	
 	@Override
@@ -143,11 +137,10 @@ public class DrawView extends View
 		List<Integer> listX = new ArrayList<Integer>();
 		List<Integer> listY = new ArrayList<Integer>();
 		
-		
 		//Find intermediate points if action move
 		if(event.getAction() == MotionEvent.ACTION_MOVE && (prevX != curX && prevY != curY)){
 			ArrayList<Point> interpolationPoints = new ArrayList<Point>();
-			interpolationPoints = interpol(prevX, prevY, curX, curY);
+			interpolationPoints = interpolation(prevX, prevY, curX, curY);
 			for(int i=0; i< interpolationPoints.size(); i++){
 				listX.add(interpolationPoints.get(i).x);
 				listY.add(interpolationPoints.get(i).y);
@@ -161,17 +154,13 @@ public class DrawView extends View
 		prevY = curY;
 		
 		// we're out, we don't handle this, return
-		Log.e("DrawView", "Number of Points: "+String.valueOf(listX.size()));
 		for(int i=0;i<listX.size();i++){
 			int x = listX.get(i);
 			int y = listY.get(i);
-			Log.e("DrawView", "X: "+String.valueOf(x)+" Y: "+String.valueOf(y));
 			
 			if((x <= GRID_SIZE-1 && y <= GRID_SIZE-1) && (x >= 0 && y >= 0))
 			{
-				int pictureIndex = x*GRID_SIZE+y;
-				int caseColor = picture.get(pictureIndex);
-				
+				int pictureIndex = x*GRID_SIZE+y;				
 				// locate the square which correspond to the point the user has touched
 				// I do think we can think of a better algorithm but let's start with this one
 				picture.set(pictureIndex, currentColor);

@@ -10,25 +10,27 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="Play" />
-
-    <Button
-        android:id="@+id/buttonTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/buttonPlay"
-        android:layout_centerVertical="true"
-        android:text="Test" />
+        android:textSize="100dp"
+        android:minHeight="148dp"
+        android:text="Play!" />
 
     <Button
         android:id="@+id/btnName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/buttonTest"
-        android:text="Change Your Name" />
+        android:layout_below="@+id/buttonPlay"
+        android:layout_marginTop="50dp"
+        android:minHeight="48dp"
+        android:text="Change Pseudo" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:src="@drawable/pixeldraw" />
 
 </RelativeLayout>

@@ -14,20 +14,16 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.polytech.polydraw.R;
 import com.polytech.polydraw.models.Player;
 import com.polytech.polydraw.models.Wrapper;
-import com.polytech.polydraw.ui.activities.GameActivity;
 import com.polytech.polydraw.ui.activities.GameJoinActivity;
 import com.polytech.polydraw.utils.ErrorHandler;
-
 import de.tavendo.autobahn.Wamp.CallHandler;
 
 public class MenuFragment extends BaseFragment implements CallHandler
 {
 	private Button btnPlay;
-	private Button btnTest;
 	private Button btnName;
 	public static MenuFragment newInstance()
 	{
@@ -54,15 +50,6 @@ public class MenuFragment extends BaseFragment implements CallHandler
 			public void onClick(View v) 
 			{
 				GameJoinActivity.launch(getActivity());			
-			}
-		});
-		
-		btnTest.setOnClickListener(new OnClickListener() 
-		{	
-			@Override
-			public void onClick(View v) 
-			{
-				GameActivity.launch(getActivity());
 			}
 		});
 		
@@ -176,7 +163,6 @@ public class MenuFragment extends BaseFragment implements CallHandler
 		View v = inflater.inflate(R.layout.fragment_menu, null);
 		
 		btnPlay = (Button)v.findViewById(R.id.buttonPlay);
-		btnTest = (Button)v.findViewById(R.id.buttonTest);
 		btnName = (Button)v.findViewById(R.id.btnName);
 		return v;
 	}
