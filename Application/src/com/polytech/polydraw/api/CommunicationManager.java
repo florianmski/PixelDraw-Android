@@ -91,7 +91,7 @@ public class CommunicationManager{
 	
 	public void leaveRoom(CallHandler leaveRoomHandler){
 		HashMap<String, String> key = new HashMap<String, String>();
-		key.put("room_id", mGameContext.getRoomID());
+		key.put("room_id", mGameContext.getCurRoom().id);
 		mConnection.call("leave_room", Wrapper.class, leaveRoomHandler, key);
 	}
 	
@@ -106,7 +106,7 @@ public class CommunicationManager{
 	}
 	
 	public void sendChatMessage(String message){
-		String room = mGameContext.getRoomID();
+		String room = mGameContext.getCurRoom().id;
 		
 		GameEventWrapper ev = new GameEventWrapper();
 		ev.player_id = mGameContext.getPlayerID();
@@ -120,7 +120,7 @@ public class CommunicationManager{
 	}
 
 	public void sendDrawMessage(ArrayList<Pixel> picture){
-		String room = mGameContext.getRoomID();
+		String room = mGameContext.getCurRoom().id;
 		
 		GameEventWrapper core = new GameEventWrapper();
 		core.player_id = mGameContext.getPlayerID();
@@ -137,11 +137,11 @@ public class CommunicationManager{
 	 * To call once we join a room
 	 */
 	public void subscribeGame(){
-		mConnection.subscribe(mGameContext.getRoomID(), GameEvent.class, mGameEventHandler);
+		mConnection.subscribe(mGameContext.getCurRoom().id, GameEvent.class, mGameEventHandler);
 	}
 	
 	public void unsubscribeGame(){
-		mConnection.unsubscribe(mGameContext.getRoomID());
+		mConnection.unsubscribe(mGameContext.getCurRoom().id);
 	}
 	
 	/**
