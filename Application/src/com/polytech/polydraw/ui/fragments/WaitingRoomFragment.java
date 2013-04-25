@@ -100,4 +100,5 @@ public class WaitingRoomFragment extends BaseFragment implements RoomEventListen
 		getGC().setPlayerList(players);
 		adapter.update(players);
 	}
+	
 }
