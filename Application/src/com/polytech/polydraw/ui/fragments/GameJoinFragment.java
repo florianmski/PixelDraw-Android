@@ -194,6 +194,4 @@ public class GameJoinFragment extends BaseFragment
 		});
 		
 	}
-	
-	
 }

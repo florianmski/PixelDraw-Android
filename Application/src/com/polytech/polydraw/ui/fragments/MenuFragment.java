@@ -24,7 +24,7 @@ public class MenuFragment extends BaseFragment implements CallHandler
 {
 	private Button btnPlay;
 	private Button btnTest;
-
+	private Button btnName;
 	public static MenuFragment newInstance()
 	{
 		MenuFragment f = new MenuFragment();
@@ -62,7 +62,44 @@ public class MenuFragment extends BaseFragment implements CallHandler
 			}
 		});
 		
+		btnName.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showDialogSetPlayerName();
+			}
+		});
+			
 		start();
+	}
+	
+	
+	private void showDialogSetPlayerName(){
+		
+		final SharedPreferences settings = getActivity().getSharedPreferences("PolydrawPreferences5", 0);
+		
+			// Alert dialog for name
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			final EditText edt = new EditText(getActivity());
+			edt.setHint("Enter your pseudo");
+			
+			builder.setView(edt).setPositiveButton("Ok", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which) 
+				{
+					String playerName = edt.getText().toString().trim();
+					getGC().setPlayerName(playerName);
+					
+					SharedPreferences.Editor settingEditor = settings.edit();
+					settingEditor.putBoolean("is_player_name_set", true);
+					settingEditor.putString("player_name", playerName);
+					settingEditor.commit();
+					
+				}
+			});
+			builder.create().show();
 	}
 	
 	private void startConnection()
@@ -103,8 +140,6 @@ public class MenuFragment extends BaseFragment implements CallHandler
 		else
 		{
 			String playerName = settings.getString("player_name", "Anonymous");
-			if(playerName=="")
-				playerName = "Anonymous";
 			getGC().setPlayerName(playerName);
 			startConnection();
 		}
@@ -117,7 +152,7 @@ public class MenuFragment extends BaseFragment implements CallHandler
 		
 		btnPlay = (Button)v.findViewById(R.id.buttonPlay);
 		btnTest = (Button)v.findViewById(R.id.buttonTest);
-		
+		btnName = (Button)v.findViewById(R.id.btnName);
 		return v;
 	}
 
