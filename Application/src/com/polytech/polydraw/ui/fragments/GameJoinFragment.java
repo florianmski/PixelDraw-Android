@@ -52,14 +52,11 @@ public class GameJoinFragment extends BaseFragment
 				
 				Wrapper wr = (Wrapper)result;
 				ArrayList<Room> list_room = wr.rooms;
-
 				lvGame.setAdapter(adapter = new ListGameAdapter(getActivity(), list_room));
 			}
 			
 			@Override
 			public void onError(String errorUri, String errorDesc) {
-				
-				
 			}
 		});
 		
